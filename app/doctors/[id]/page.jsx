@@ -27,15 +27,18 @@ export default async function DoctorProfile({ params }) {
       <section className="section" style={{ paddingTop: 30 }}>
         <div className="container profile-grid">
           <Reveal>
-            <div>
-              <Photo src={d.photo} alt={d.name} className="profile-photo" />
-              <div className="card profile-card" style={{ marginTop: 20 }}>
-                <h2 style={{ fontSize: 22 }}>{d.name}</h2>
-                <p style={{ color: "var(--muted)" }}>{d.title}</p>
-                <div style={{ margin: "12px 0" }}><span className="spec-pill">{specialtyName(d.specialty)}</span></div>
-                <p className="rating">⭐ {d.rating} · {d.reviews}+ Reviews</p>
-                <p style={{ color: "var(--muted)", fontSize: 14 }}>{d.experience}+ Years Experience</p>
+            <div className="team-card">
+              <div className="circle-top"></div>
+              <div className="circle-bottom"></div>
+              <span className="team-eyebrow">medical specialist</span>
+              <div className="team-photo">
+                <Photo src={d.photo} alt={d.name} ratio="1/1" />
               </div>
+              <h2>{d.name}</h2>
+              <p className="role">{d.title}</p>
+              <div style={{ margin: "12px 0" }}><span className="spec-pill">{specialtyName(d.specialty)}</span></div>
+              <p className="rating">⭐ {d.rating} · {d.reviews}+ Reviews</p>
+              <p style={{ color: "var(--muted)", fontSize: 14 }}>{d.experience}+ Years Experience</p>
             </div>
           </Reveal>
 

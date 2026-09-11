@@ -1,8 +1,19 @@
 "use client";
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import DoctorCard from "../../components/DoctorCard";
+import Link from "next/link";
 import { DOCTORS, SPECIALTIES, specialtyName } from "../../lib/data";
+
+function TeamCard({ doctor }) {
+  return (
+    <Link className="tcard" href={`/doctors/${doctor.id}`}>
+      <img src={doctor.photo} alt={doctor.name} loading="lazy" />
+      <h2>{doctor.name}</h2>
+      <p>{doctor.title}</p>
+      <div className="t-rate">⭐ {doctor.rating} · {specialtyName(doctor.specialty)}</div>
+    </Link>
+  );
+}
 
 function Finder() {
   const params = useSearchParams();
@@ -24,62 +35,72 @@ function Finder() {
     });
   }, [q, specialty, gender, language, branch]);
 
+  const split = results.length > 2;
+  const top = split ? results.slice(0, 2) : [];
+  const rest = split ? results.slice(2) : results;
+
   return (
-    <>
-      <div className="filter-bar">
-        <input placeholder="🔎 Search doctor name..." value={q} onChange={(e) => setQ(e.target.value)} />
-        <select value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
-          <option value="">Specialty: All</option>
-          {SPECIALTIES.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-        </select>
-        <select value={branch} onChange={(e) => setBranch(e.target.value)}>
-          <option value="">Location: All</option>
-          <option>Central</option><option>South</option><option>Bandung</option>
-        </select>
-        <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="">Gender: All</option>
-          <option>Female</option><option>Male</option>
-        </select>
-        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-          <option value="">Language: All</option>
-          <option>Indonesian</option><option>English</option><option>Arabic</option>
-        </select>
+    <div className="team-dark">
+      <div className="circle-top"></div>
+      <div className="circle-bottom"></div>
+
+      <div className="team-header">
+        <div className="team-header-content">
+          <span>find a doctor</span>
+          <h1>Meet a team of experts and innovators who are pioneers in their field</h1>
+          <div className="team-search">
+            <input placeholder="Search doctor name or specialty..." value={q} onChange={(e) => setQ(e.target.value)} />
+            <button type="button">Search</button>
+          </div>
+        </div>
       </div>
 
-      <p style={{ color: "var(--muted)", marginBottom: 20 }}>
-        Showing <b>{results.length}</b> doctor{results.length !== 1 && "s"}
-      </p>
+      <div className="team-grid">
+        <div className="team-filters">
+          <select value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
+            <option value="">Specialty: All</option>
+            {SPECIALTIES.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+          </select>
+          <select value={branch} onChange={(e) => setBranch(e.target.value)}>
+            <option value="">Location: All</option>
+            <option>Central</option><option>South</option><option>Bandung</option>
+          </select>
+          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="">Gender: All</option>
+            <option>Female</option><option>Male</option>
+          </select>
+          <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+            <option value="">Language: All</option>
+            <option>Indonesian</option><option>English</option><option>Arabic</option>
+          </select>
+        </div>
 
-      {results.length === 0 ? (
-        <div className="card" style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 48 }}>🔍</div>
-          <h3>No doctors match your filters</h3>
-          <p>Try a different name, specialty or location.</p>
-        </div>
-      ) : (
-        <div className="grid-3">
-          {results.map((d) => <DoctorCard key={d.id} doctor={d} showFee />)}
-        </div>
-      )}
-    </>
+        <p className="team-count">Showing <b>{results.length}</b> doctor{results.length !== 1 && "s"} — click a card to view profile</p>
+
+        {results.length === 0 ? (
+          <div className="team-empty">
+            <h2>No doctors match your filters</h2>
+            <p>Try a different name, specialty or location.</p>
+          </div>
+        ) : (
+          <>
+            {split && (
+              <div className="team-row">
+                {top.map((d) => <TeamCard key={d.id} doctor={d} />)}
+              </div>
+            )}
+            {rest.map((d) => <TeamCard key={d.id} doctor={d} />)}
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 
 export default function DoctorsPage() {
   return (
-    <>
-      <div className="page-hero">
-        <div className="container">
-          <div className="breadcrumb"><a href="/">Home</a> / Find a Doctor</div>
-          <h1>Find the right doctor for you</h1>
-          <p>Search by name, filter by specialty, location, availability, gender or language.</p>
-        </div>
-      </div>
-      <section className="section" style={{ paddingTop: 20 }}>
-        <div className="container">
-          <Suspense fallback={<p>Loading...</p>}><Finder /></Suspense>
-        </div>
-      </section>
-    </>
+    <Suspense fallback={<p style={{ padding: 40 }}>Loading...</p>}>
+      <Finder />
+    </Suspense>
   );
 }

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
 
 :root{
   --navy:#0B1F33; --navy-2:#12294a;
@@ -320,3 +321,44 @@ button.pill.ok:hover{background:var(--teal);color:#fff}
 /* success check + emergency badge (no emoji) */
 .check-circle{width:88px;height:88px;border-radius:50%;background:var(--teal-soft);color:#0d7d70;display:grid;place-items:center;font-size:44px;font-weight:800;margin:0 auto 8px}
 .emg-badge{width:64px;height:64px;border-radius:50%;background:#e11d48;color:#fff;display:grid;place-items:center;font-size:34px;font-weight:800;margin:0 auto 8px;box-shadow:0 10px 26px rgba(225,29,72,.4)}
+
+/* ── team / meet-the-doctor card ── */
+.team-card{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:26px;padding:52px 32px 38px;text-align:center;box-shadow:var(--shadow)}
+.circle-top{position:absolute;top:-90px;right:-90px;width:220px;height:220px;border-radius:50%;background:linear-gradient(135deg,var(--teal-soft),#d3e7ff)}
+.circle-bottom{position:absolute;bottom:-110px;left:-110px;width:250px;height:250px;border-radius:50%;background:linear-gradient(135deg,#E8F1FE,var(--teal-soft))}
+.team-card>*:not(.circle-top):not(.circle-bottom){position:relative}
+.team-eyebrow{display:block;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);font-weight:800;margin-bottom:18px}
+.team-photo{width:172px;height:172px;border-radius:50%;margin:0 auto 20px;border:6px solid #fff;box-shadow:0 16px 38px rgba(11,31,51,.2);overflow:hidden}
+.team-photo .photo{width:100%;height:100%}
+.team-card h2{font-size:25px;letter-spacing:-.4px}
+.team-card .role{color:var(--muted);margin:5px 0 4px;font-size:15px}
+
+/* ── dark "meet the team" doctors page (scoped) ── */
+.team-dark{background:#1f2c3a;color:#fff;position:relative;overflow:hidden;font-family:"Nunito",sans-serif}
+.team-dark .circle-top{width:clamp(25rem,30vw,31.25rem);height:clamp(25rem,30vw,31.25rem);position:absolute;top:3em;left:-8em;border-radius:50%;background:radial-gradient(circle,#00458f8f 0%,#00458e00 60%,#ffffff00 100%)}
+.team-dark .circle-bottom{width:clamp(25rem,30vw,31.25rem);height:clamp(25rem,30vw,31.25rem);position:absolute;bottom:-5em;right:-8em;border-radius:50%;background:radial-gradient(circle,#00458f8f 0%,#00458e00 65%,#ffffff00 100%)}
+.team-header{background:linear-gradient(to top,#1f2c3a 0%,#2f3c4742 100%),url("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1932&auto=format&fit=crop") no-repeat 50% 50%/cover;width:100%;min-height:24em;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff}
+.team-header-content{width:min(37.5em,90%);margin-top:5em;position:relative;z-index:10}
+.team-header-content>span{display:inline-block;text-transform:uppercase;letter-spacing:.063rem;font-size:clamp(.8rem,.7625rem + .1875vw,.95rem);color:#7fd4c7;font-weight:800}
+.team-header-content h1{font-size:clamp(1.5rem,1.375rem + .625vw,2rem);font-weight:700}
+.team-search{margin:22px auto 0;max-width:32em;display:flex;gap:10px;background:rgba(255,255,255,.08);border:1px solid #48627a;border-radius:999px;padding:7px 7px 7px 22px;backdrop-filter:blur(6px)}
+.team-search input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:#fff;font-family:inherit;font-size:15px}
+.team-search input::placeholder{color:#9db2c4}
+.team-search button{background:var(--teal);border:none;color:#fff;font-weight:800;font-family:inherit;font-size:14px;border-radius:999px;padding:11px 26px;cursor:pointer}
+.team-grid{display:flex;justify-content:center;flex-wrap:wrap;max-width:75em;margin-inline:auto;gap:.938rem;transform:translateY(-3em);position:relative;z-index:10;padding:0 24px 70px}
+.team-row{flex-basis:100%;display:flex;justify-content:center;gap:.938rem;flex-wrap:wrap}
+.team-filters{flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.team-filters select{background:#2a3a4d;border:1px solid #48627a;color:#fff;padding:12px 16px;border-radius:12px;font-family:inherit;font-size:14px;outline:none;cursor:pointer}
+.team-filters select option{color:#111}
+.team-count{flex-basis:100%;text-align:center;color:#afafaf;margin-bottom:8px}
+.tcard{padding:1.875em 1.25em;max-width:18.75rem;width:90%;min-height:17.5rem;display:grid;place-content:center;place-items:center;text-align:center;position:relative;transition:transform .25s}
+.tcard:hover{transform:translateY(-6px)}
+.tcard::before{position:absolute;content:"";top:0;left:0;width:100%;height:100%;border-radius:1rem;z-index:-1;border:.125rem solid transparent;background:linear-gradient(45deg,#1e272e,#48627a) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask-composite:exclude}
+.tcard img{border-radius:50%;width:clamp(100px,40vw,120px);height:clamp(100px,40vw,120px);object-fit:cover;object-position:top;background:#2a3a4d}
+.team-row .tcard img{width:clamp(7.5rem,40vw,9.375rem);height:clamp(7.5rem,40vw,9.375rem)}
+.tcard h2{color:#fff;letter-spacing:.05rem;font-size:clamp(1rem,.9375rem + .3125vw,1.25rem);margin-top:.625em;margin-bottom:.188em}
+.tcard p{color:#afafaf;font-size:clamp(.8rem,.7625rem + .1875vw,.95rem)}
+.tcard .t-rate{color:#7fd4c7;font-size:.8rem;font-weight:700;margin-top:.55em}
+.team-empty{flex-basis:100%;max-width:36em;text-align:center;padding:48px 24px;position:relative}
+.team-empty h2{color:#fff;margin-bottom:8px}
+.team-empty p{color:#afafaf}
