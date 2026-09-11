@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Photo from "../../components/Photo";
 import { SPECIALTIES, DOCTORS } from "../../lib/data";
 
 export default function ServicesPage() {
@@ -30,9 +31,9 @@ export default function ServicesPage() {
               const count = DOCTORS.filter((d) => d.specialty === s.id).length;
               return (
                 <div className="card" key={s.id}>
-                  <div className="icon">{s.icon}</div>
+                  <Photo src={s.photo} alt={s.name} className="card-photo" ratio="16/10" />
                   <h3>{s.name}</h3><p>{s.desc}</p>
-                  <p style={{ fontSize: 13, marginTop: 8 }}>👨‍⚕️ {count} specialist{count !== 1 && "s"}</p>
+                  <p style={{ fontSize: 13, marginTop: 8 }}>{count} specialist{count !== 1 && "s"} available</p>
                   <Link href={`/doctors?specialty=${s.id}`} className="link">See doctors →</Link>
                 </div>
               );

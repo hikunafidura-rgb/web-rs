@@ -1,6 +1,7 @@
 "use client";
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Photo from "../../components/Photo";
 import {
   SPECIALTIES, DOCTORS, getDoctor, specialtyName, rupiah,
   nextDays, dateKey, fmtDay, slotStatus, TIMES,
@@ -49,7 +50,7 @@ function Wizard() {
   if (done) {
     return (
       <div className="card success">
-        <div className="big">🎉</div>
+        <div className="check-circle">✓</div>
         <h2>Booking Confirmed!</h2>
         <p style={{ color: "var(--muted)" }}>We&apos;ve sent the details to your WhatsApp. Please arrive 15 minutes early.</p>
         <div className="booking-code">{done.code}</div>
@@ -88,7 +89,8 @@ function Wizard() {
               {SPECIALTIES.map((s) => (
                 <div key={s.id} className={`opt ${specialty === s.id ? "selected" : ""}`}
                   onClick={() => { setSpecialty(s.id); setDoctorId(""); }}>
-                  <div className="oi">{s.icon}</div><strong>{s.name}</strong><small>{s.desc}</small>
+                  <Photo src={s.photo} alt={s.name} className="opt-thumb" ratio="16/9" />
+                  <strong>{s.name}</strong><small>{s.desc}</small>
                 </div>
               ))}
             </div>
@@ -103,7 +105,7 @@ function Wizard() {
               {doctors.map((d) => (
                 <div key={d.id} className={`opt ${doctorId === d.id ? "selected" : ""}`}
                   onClick={() => { setDoctorId(d.id); setTime(""); }}>
-                  <div className={`avatar ${d.gradient}`} style={{ margin: "0 auto 10px" }}>{d.initials}</div>
+                  <Photo src={d.photo} alt={d.name} className="opt-thumb" ratio="16/10" />
                   <strong>{d.name}</strong>
                   <small>⭐ {d.rating} · {d.experience}y exp. · {rupiah(d.fee)}</small>
                 </div>

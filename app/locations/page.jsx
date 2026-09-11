@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
+import Photo from "../../components/Photo";
 import { LOCATIONS } from "../../lib/data";
 
 export default function LocationsPage() {
@@ -29,6 +30,7 @@ export default function LocationsPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {results.map((l) => (
               <div className="card loc-card" key={l.id}>
+                <Photo src={l.photo} alt={l.name} className="loc-photo" ratio="16/9" />
                 <h3>{l.name}</h3>
                 <div className="addr">📍 {l.address}</div>
                 <p>🕐 {l.hours}<br />📞 {l.phone}</p>

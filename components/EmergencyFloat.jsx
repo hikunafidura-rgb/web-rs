@@ -9,7 +9,7 @@ export default function EmergencyFloat() {
       {open && (
         <div className="modal-overlay" onClick={() => setOpen(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="big">🚨</div>
+            <div className="emg-badge">+</div>
             <h2 style={{ margin: "10px 0 6px" }}>Need immediate medical assistance?</h2>
             <p style={{ color: "var(--muted)" }}>Our emergency team is ready 24 hours, every day.</p>
             <a href="tel:+62215550911" className="btn btn-primary btn-block" style={{ marginTop: 20 }}>

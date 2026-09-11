@@ -1,26 +1,27 @@
 import Link from "next/link";
+import Photo from "./Photo";
 import { specialtyName, rupiah } from "../lib/data";
 
 export default function DoctorCard({ doctor, showFee = false }) {
   return (
     <div className="card doctor-card">
-      <div className="doc-top">
-        <div className={`avatar ${doctor.gradient}`}>{doctor.initials}</div>
-        <div>
-          <h3>{doctor.name}</h3>
-          <div className="title">{doctor.title}</div>
+      <div style={{ position: "relative", margin: "-32px -32px 20px", borderRadius: "20px 20px 0 0", overflow: "hidden" }}>
+        <Photo src={doctor.photo} alt={doctor.name} ratio="4/3" />
+        <div className="on-photo">
+          <span className="spec-pill">{specialtyName(doctor.specialty)}</span>
+          <span className="avail">● Available Today</span>
         </div>
       </div>
-      <div><span className="spec-pill">{specialtyName(doctor.specialty)}</span></div>
+      <h3>{doctor.name}</h3>
+      <div className="title" style={{ fontSize: 13.5, color: "var(--muted)", marginBottom: 10 }}>{doctor.title}</div>
       <div className="doc-meta">
         <span>⭐ <b>{doctor.rating}</b> · {doctor.reviews}+ reviews</span>
-        <span>🎓 <b>{doctor.experience}y</b> exp.</span>
-        {showFee && <span>💳 <b>{rupiah(doctor.fee)}</b></span>}
+        <span><b>{doctor.experience} yrs</b> experience</span>
+        {showFee && <span><b>{rupiah(doctor.fee)}</b></span>}
       </div>
-      <div style={{ marginBottom: 18 }}><span className="avail">● Available Today</span></div>
       <div className="doc-actions">
-        <Link href={`/doctors/${doctor.id}`} className="btn btn-outline btn-sm">View Profile →</Link>
-        <Link href={`/appointment?doctor=${doctor.id}`} className="btn btn-primary btn-sm">Book</Link>
+        <Link href={`/doctors/${doctor.id}`} className="btn btn-outline btn-sm">View Profile</Link>
+        <Link href={`/appointment?doctor=${doctor.id}`} className="btn btn-primary btn-sm">Book →</Link>
       </div>
     </div>
   );

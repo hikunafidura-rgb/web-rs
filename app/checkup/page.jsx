@@ -1,6 +1,7 @@
 "use client";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Photo from "../../components/Photo";
 import { MCU_PACKAGES, rupiah, nextDays, dateKey, fmtDay } from "../../lib/data";
 
 function Booking() {
@@ -15,7 +16,7 @@ function Booking() {
   if (ok) {
     return (
       <div className="card success">
-        <div className="big">✅</div>
+        <div className="check-circle">✓</div>
         <h2>Check-Up Reserved!</h2>
         <p style={{ color: "var(--muted)" }}>
           {name}, your <b>{selected.name}</b> package is reserved. Our team will call you to confirm the schedule.
@@ -32,7 +33,9 @@ function Booking() {
           {MCU_PACKAGES.map((p) => (
             <div key={p.id} className={`opt ${pkg === p.id ? "selected" : ""}`} onClick={() => setPkg(p.id)}
               style={{ textAlign: "left", display: "flex", gap: 16, alignItems: "center" }}>
-              <div className="oi" style={{ fontSize: 40 }}>{p.icon}</div>
+              <div style={{ width: 110, minWidth: 110 }}>
+                <Photo src={p.photo} alt={p.name} ratio="1/1" className="opt-thumb" />
+              </div>
               <div>
                 <strong style={{ fontSize: 18 }}>{p.name} — {rupiah(p.price)}</strong>
                 <div style={{ color: "var(--muted)", fontSize: 14 }}>{p.features.join(" · ")}</div>

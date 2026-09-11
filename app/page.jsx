@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Reveal from "../components/Reveal";
+import Photo from "../components/Photo";
 import DoctorCard from "../components/DoctorCard";
-import { DOCTORS, SPECIALTIES, LOCATIONS, MCU_PACKAGES, rupiah } from "../lib/data";
+import { DOCTORS, SPECIALTIES, LOCATIONS, MCU_PACKAGES, HERO_PHOTO, rupiah } from "../lib/data";
 
 const WHY = [
   ["01", "Expert Doctors", "Experienced specialists dedicated to your care."],
@@ -9,6 +10,8 @@ const WHY = [
   ["03", "Patient First", "Healthcare designed around your needs."],
   ["04", "24/7 Support", "We're here whenever you need us."],
 ];
+
+const featured = DOCTORS.slice(0, 4);
 
 export default function Home() {
   return (
@@ -18,15 +21,15 @@ export default function Home() {
         <div className="container hero-grid">
           <div>
             <span className="eyebrow">✨ Trusted Hospital & Medical Center</span>
-            <h1>Better Care.<br /><span className="teal">Better Life.</span></h1>
+            <h1>Exceptional Healthcare,<br /><span className="teal">Designed Around You.</span></h1>
             <p className="sub">Discover trusted doctors, advanced medical services, and personalized healthcare — all in one place.</p>
             <div className="hero-btns">
               <Link href="/doctors" className="btn btn-primary">Find a Doctor →</Link>
-              <Link href="/appointment" className="btn btn-outline">Book Appointment</Link>
+              <Link href="/appointment" className="btn btn-outline">Book an Appointment</Link>
             </div>
             <div className="hero-trust">
               <div className="avatar-stack">
-                <span className="g1">AR</span><span className="g3">FH</span><span className="g4">NP</span><span className="g6">SL</span>
+                {featured.map((d) => <img key={d.id} src={d.photo} alt={d.name} loading="lazy" />)}
               </div>
               <small><strong>⭐ 4.9/5</strong><br />from 2,400+ patient reviews</small>
             </div>
@@ -37,21 +40,33 @@ export default function Home() {
             </form>
           </div>
 
-          <div className="hero-visual">
-            <div className="doc-photo">
-              <div className="face">👨‍⚕️</div>
-              <strong>150+ Specialist Doctors</strong>
-              <span>Across 7 centers of excellence</span>
-            </div>
-            <div className="float-card float-1">
-              <span className="fi">🚑</span>
-              <div><strong>24/7 Emergency Care</strong><span>We&apos;re here when you need us.</span></div>
-            </div>
-            <div className="float-card float-2">
-              <span className="fi">🏆</span>
-              <div><strong>Nationally Accredited</strong><span>Paripurna-level standard</span></div>
+          <div className="hero-media">
+            <Photo src={HERO_PHOTO} alt="HIKUNA Hospital building" className="hero-main-img" ratio="4/4.6" />
+            <div className="hero-exp"><strong>15+</strong><span>Years of Care</span></div>
+            <div className="hero-mini">
+              <Photo src={DOCTORS[0].photo} alt={DOCTORS[0].name} ratio="1/1" />
+              <div>
+                <strong>{DOCTORS[0].name}</strong>
+                <span>Cardiologist · 15 yrs exp.</span>
+                <div className="rating">⭐ 4.9 · 132 reviews</div>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── EMERGENCY STRIP ── */}
+      <section style={{ paddingBottom: 8 }}>
+        <div className="container">
+          <Reveal>
+            <div className="card" style={{ display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap", borderLeft: "6px solid #e11d48" }}>
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <h3 style={{ marginBottom: 2 }}>24/7 Emergency Care — we&apos;re here when you need us.</h3>
+                <p>One tap to reach our emergency team, day or night.</p>
+              </div>
+              <a href="tel:+62215550911" className="btn btn-primary">📞 +62 21 555 0911</a>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -78,12 +93,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SERVICES ── */}
+      {/* ── SERVICES with real facility photos ── */}
       <section className="section section-alt" id="services">
         <div className="container">
           <Reveal>
             <div className="section-head center">
-              <span className="tag">Our Services</span>
+              <span className="tag">Medical Services</span>
               <h2>Find the right care for you</h2>
               <p>Centers of excellence with advanced diagnostics and treatment.</p>
             </div>
@@ -92,7 +107,7 @@ export default function Home() {
             {SPECIALTIES.slice(0, 6).map((s, i) => (
               <Reveal key={s.id} delay={(i % 3) * 100}>
                 <div className="card">
-                  <div className="icon">{s.icon}</div>
+                  <Photo src={s.photo} alt={s.name} className="card-photo" ratio="16/10" />
                   <h3>{s.name}</h3><p>{s.desc}</p>
                   <Link href={`/doctors?specialty=${s.id}`} className="link">See doctors →</Link>
                 </div>
@@ -142,8 +157,8 @@ export default function Home() {
             {MCU_PACKAGES.map((p, i) => (
               <Reveal key={p.id} delay={i * 100}>
                 <div className={`card mcu-card ${p.highlight ? "highlight" : ""}`}>
-                  {p.highlight && <span className="mcu-flag">⭐ MOST POPULAR</span>}
-                  <div className="icon">{p.icon}</div>
+                  {p.highlight && <span className="mcu-flag">MOST POPULAR</span>}
+                  <Photo src={p.photo} alt={p.name} className="mcu-photo" ratio="16/9" />
                   <h3>{p.name}</h3><p>{p.desc}</p>
                   <div className="mcu-price">{rupiah(p.price)} <small>/ package</small></div>
                   <ul className="mcu-features">{p.features.map((f) => <li key={f}>{f}</li>)}</ul>
@@ -170,8 +185,9 @@ export default function Home() {
             {LOCATIONS.map((l, i) => (
               <Reveal key={l.id} delay={i * 100}>
                 <div className="card loc-card">
-                  <h3>📍 {l.name}</h3>
-                  <div className="addr">{l.address}</div>
+                  <Photo src={l.photo} alt={l.name} className="loc-photo" ratio="16/9" />
+                  <h3>{l.name}</h3>
+                  <div className="addr">📍 {l.address}</div>
                   <p>🕐 {l.hours}<br />📞 {l.phone}</p>
                   <Link href="/locations" className="link">Get Directions →</Link>
                 </div>

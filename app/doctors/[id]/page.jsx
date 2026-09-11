@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "../../../components/Reveal";
+import Photo from "../../../components/Photo";
 import { DOCTORS, getDoctor, specialtyName, rupiah, nextDays, fmtDay, dateKey, slotStatus, TIMES } from "../../../lib/data";
 
 export function generateStaticParams() {
@@ -26,13 +27,15 @@ export default async function DoctorProfile({ params }) {
       <section className="section" style={{ paddingTop: 30 }}>
         <div className="container profile-grid">
           <Reveal>
-            <div className="card profile-card">
-              <div className={`avatar ${d.gradient}`}>{d.initials}</div>
-              <h2 style={{ fontSize: 24 }}>{d.name}</h2>
-              <p style={{ color: "var(--muted)" }}>{d.title}</p>
-              <div style={{ margin: "12px 0" }}><span className="spec-pill">{specialtyName(d.specialty)}</span></div>
-              <p className="rating">⭐ {d.rating} · {d.reviews}+ Reviews</p>
-              <p style={{ color: "var(--muted)", fontSize: 14 }}>🎓 {d.experience}+ Years Experience</p>
+            <div>
+              <Photo src={d.photo} alt={d.name} className="profile-photo" />
+              <div className="card profile-card" style={{ marginTop: 20 }}>
+                <h2 style={{ fontSize: 22 }}>{d.name}</h2>
+                <p style={{ color: "var(--muted)" }}>{d.title}</p>
+                <div style={{ margin: "12px 0" }}><span className="spec-pill">{specialtyName(d.specialty)}</span></div>
+                <p className="rating">⭐ {d.rating} · {d.reviews}+ Reviews</p>
+                <p style={{ color: "var(--muted)", fontSize: 14 }}>{d.experience}+ Years Experience</p>
+              </div>
             </div>
           </Reveal>
 
