@@ -1,31 +1,47 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const links = [
-  ["#beranda", "Beranda"],
-  ["#tentang", "Tentang Kami"],
-  ["#layanan", "Layanan"],
-  ["#dokter", "Dokter"],
-  ["#fasilitas", "Fasilitas"],
-  ["#artikel", "Artikel Kesehatan"],
-  ["#kontak", "Kontak"],
+const LINKS = [
+  ["/", "Home"],
+  ["/doctors", "Find a Doctor"],
+  ["/services", "Services"],
+  ["/checkup", "Medical Check-Up"],
+  ["/#about", "About Us"],
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const path = usePathname();
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 12);
+    fn();
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  const isActive = (href) =>
+    href === "/" ? path === "/" : href !== "/#about" && path.startsWith(href);
+
   return (
-    <header className="navbar">
+    <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="container nav-inner">
-        <Link href="#beranda" className="logo">
-          <span className="logo-icon">🏥</span>
-          <span className="logo-text">HIKUNA <small>Hospital</small></span>
+        <Link href="/" className="logo">
+          <span className="logo-mark">H</span>
+          <span className="logo-text">HIKUNA<small>Hospital & Medical Center</small></span>
         </Link>
         <nav className={`nav-links ${open ? "open" : ""}`}>
-          {links.map(([href, label]) => (
-            <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
+          {LINKS.map(([href, label]) => (
+            <a key={href} href={href} className={isActive(href) ? "active" : ""} onClick={() => setOpen(false)}>
+              {label}
+            </a>
           ))}
-          <a href="#janji" className="btn btn-primary btn-nav" onClick={() => setOpen(false)}>🔵 Buat Janji</a>
+          <a href="/appointment" className="btn btn-primary btn-sm" onClick={() => setOpen(false)}>
+            📅 Book Appointment
+          </a>
         </nav>
         <button className="hamburger" aria-label="Menu" onClick={() => setOpen(!open)}>
           {open ? "✕" : "☰"}
