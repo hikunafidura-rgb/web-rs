@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "./Logo";
 
 const LINKS = [
   ["/", "Home"],
@@ -29,9 +30,8 @@ export default function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="container nav-inner">
-        <Link href="/" className="logo">
-          <span className="logo-mark">H</span>
-          <span className="logo-text">HIKUNA<small>Hospital & Medical Center</small></span>
+        <Link href="/" aria-label="HIKUNA Hospital home">
+          <Logo />
         </Link>
         <nav className={`nav-links ${open ? "open" : ""}`}>
           {LINKS.map(([href, label]) => (

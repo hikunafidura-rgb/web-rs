@@ -1,13 +1,13 @@
 import Link from "next/link";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-grid">
         <div>
-          <div className="logo" style={{ marginBottom: 16 }}>
-            <span className="logo-mark">H</span>
-            <span className="logo-text">HIKUNA<small>Hospital & Medical Center</small></span>
+          <div style={{ marginBottom: 16 }}>
+            <Logo light />
           </div>
           <p>Compassionate Care, Advanced Medicine.</p>
           <p>📍 Jl. Sehat Bersama No. 88, Jakarta</p>

@@ -362,3 +362,54 @@ button.pill.ok:hover{background:var(--teal);color:#fff}
 .team-empty{flex-basis:100%;max-width:36em;text-align:center;padding:48px 24px;position:relative}
 .team-empty h2{color:#fff;margin-bottom:8px}
 .team-empty p{color:#afafaf}
+
+/* ── brand logo H+cross ── */
+.brand{display:inline-flex;align-items:center;gap:11px}
+.brand-mark{width:46px;height:46px;flex:none}
+.brand-text{line-height:1.25;font-weight:800;font-size:19px;letter-spacing:2px;color:var(--navy)}
+.brand-text.light{color:#fff}
+.brand-text small{display:block;font-size:10.5px;font-weight:400;letter-spacing:.4px;color:var(--muted)}
+.brand-text.light small{color:#A9BCCD}
+
+/* ── hero full-bleed photo ── */
+.hero-bg{background-size:cover;background-position:center;background-repeat:no-repeat}
+.hero-bg::before{display:none}
+.hero-cards{display:flex;flex-direction:column;gap:16px}
+.glass-card{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.75);border-radius:18px;padding:20px 24px;box-shadow:0 18px 44px rgba(11,31,51,.18);animation:float 4s ease-in-out infinite}
+.glass-card:nth-child(2){margin-left:44px;animation-delay:1.2s}
+.glass-card:nth-child(3){margin-left:88px;animation-delay:2.4s}
+.glass-card strong{display:block;font-size:16px;color:var(--navy)}
+.glass-card span{font-size:13px;color:var(--muted)}
+.glass-card .rating{font-size:13.5px}
+
+/* ── photo-backed sections ── */
+.section-ice{background:#F1F7FA}
+.section-photo{position:relative;isolation:isolate}
+.section-photo::before{content:"";position:absolute;inset:0;z-index:-1;background-image:var(--sec-bg);background-size:cover;background-position:center;opacity:.15}
+.section-photo.deep::before{opacity:.24}
+.section-photo>.container{position:relative}
+
+/* ── philosophy stats band ── */
+.stats-band{background:linear-gradient(135deg,#0B1F33,#16406f 65%,#1d7a6e 130%);border-radius:28px;padding:60px 52px;color:#fff;position:relative;overflow:hidden}
+.stats-band::after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(43,184,168,.3),transparent 70%);top:-140px;right:-100px}
+.stats-eyebrow{display:inline-block;font-size:12.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#7fd4c7;margin-bottom:12px}
+.stats-band h2{color:#fff;font-size:34px;letter-spacing:-.6px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:38px;position:relative;z-index:1}
+.stat-num{font-size:48px;font-weight:800;letter-spacing:-1.5px;line-height:1}
+.stat-num em{font-style:normal;color:#2BB8A8}
+.stat-label{color:#c8d6e5;font-size:14px;margin-top:8px}
+
+/* ── testimonials ── */
+.testi-card{display:flex;flex-direction:column}
+.testi-stars{color:#f59e0b;letter-spacing:3px;font-size:15px;margin-bottom:12px}
+.testi-text{font-size:15.5px;color:#33475f;flex:1}
+.testi-person{display:flex;gap:14px;align-items:center;margin-top:22px}
+.testi-ava{width:56px;min-width:56px;height:56px;border-radius:50%}
+.testi-ava img{border-radius:50%}
+.testi-person strong{display:block;font-size:15px}
+.testi-person span{font-size:13px;color:var(--muted)}
+@media(max-width:640px){
+  .stats-band{padding:40px 28px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-num{font-size:38px}
+}

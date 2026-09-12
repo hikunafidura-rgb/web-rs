@@ -2,7 +2,9 @@ import Link from "next/link";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
 import DoctorCard from "../components/DoctorCard";
-import { DOCTORS, SPECIALTIES, LOCATIONS, MCU_PACKAGES, HERO_PHOTO, rupiah } from "../lib/data";
+import Stats from "../components/Stats";
+import Testimonials from "../components/Testimonials";
+import { DOCTORS, SPECIALTIES, LOCATIONS, MCU_PACKAGES, HERO_BG, SERVICES_BG, WHY_BG, MCU_BG, rupiah } from "../lib/data";
 
 const WHY = [
   ["01", "Expert Doctors", "Experienced specialists dedicated to your care."],
@@ -16,8 +18,8 @@ const featured = DOCTORS.slice(0, 4);
 export default function Home() {
   return (
     <>
-      {/* ── HERO ── */}
-      <section className="hero">
+      {/* ── HERO : full-bleed hospital photo ── */}
+      <section className="hero hero-bg" style={{ backgroundImage: `linear-gradient(90deg,rgba(241,247,250,.98) 0%,rgba(241,247,250,.9) 45%,rgba(241,247,250,.3) 100%),url("${HERO_BG}")` }}>
         <div className="container hero-grid">
           <div>
             <span className="eyebrow">✨ Trusted Hospital & Medical Center</span>
@@ -40,16 +42,18 @@ export default function Home() {
             </form>
           </div>
 
-          <div className="hero-media">
-            <Photo src={HERO_PHOTO} alt="HIKUNA Hospital building" className="hero-main-img" ratio="4/4.6" />
-            <div className="hero-exp"><strong>15+</strong><span>Years of Care</span></div>
-            <div className="hero-mini">
-              <Photo src={DOCTORS[0].photo} alt={DOCTORS[0].name} ratio="1/1" />
-              <div>
-                <strong>{DOCTORS[0].name}</strong>
-                <span>Cardiologist · 15 yrs exp.</span>
-                <div className="rating">⭐ 4.9 · 132 reviews</div>
-              </div>
+          <div className="hero-cards">
+            <div className="glass-card">
+              <strong>🚑 24/7 Emergency Care</strong>
+              <span>We&apos;re here when you need us.</span>
+            </div>
+            <div className="glass-card">
+              <strong>150+ Specialist Doctors</strong>
+              <span>Across 7 centers of excellence</span>
+            </div>
+            <div className="glass-card">
+              <strong>🏆 Nationally Accredited</strong>
+              <span className="rating">⭐ 4.9 · 2,400+ patient reviews</span>
             </div>
           </div>
         </div>
@@ -70,8 +74,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FIND A DOCTOR preview ── */}
-      <section className="section">
+      {/* ── PHILOSOPHY + ANIMATED STATS ── */}
+      <section className="section" style={{ paddingBottom: 0 }}>
+        <div className="container">
+          <Stats />
+        </div>
+      </section>
+
+      {/* ── FIND A DOCTOR preview : ice-blue + real doctor photos ── */}
+      <section className="section section-ice">
         <div className="container">
           <Reveal>
             <div className="section-head">
@@ -93,8 +104,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SERVICES with real facility photos ── */}
-      <section className="section section-alt" id="services">
+      {/* ── SERVICES : faint medical-interior backdrop ── */}
+      <section className="section section-photo" id="services" style={{ "--sec-bg": `url("${SERVICES_BG}")` }}>
         <div className="container">
           <Reveal>
             <div className="section-head center">
@@ -120,8 +131,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHY ── */}
-      <section className="section" id="about">
+      {/* ── WHY : doctor & patient photo with white overlay ── */}
+      <section className="section section-photo deep" id="about" style={{ "--sec-bg": `url("${WHY_BG}")` }}>
         <div className="container">
           <Reveal>
             <div className="section-head">
@@ -143,8 +154,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MCU preview ── */}
-      <section className="section section-alt">
+      {/* ── MCU preview : examination-room backdrop ── */}
+      <section className="section section-photo" style={{ "--sec-bg": `url("${MCU_BG}")` }}>
         <div className="container">
           <Reveal>
             <div className="section-head center">
@@ -171,6 +182,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <Testimonials />
 
       {/* ── LOCATIONS preview ── */}
       <section className="section">
