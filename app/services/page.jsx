@@ -20,7 +20,7 @@ export default function ServicesPage() {
           <h1>Find the right care for you</h1>
           <p>Explore our medical specialties and find the right specialist for your needs.</p>
           <div className="search-hero" style={{ maxWidth: 560 }}>
-            <input placeholder="Search specialty or condition..." value={q} onChange={(e) => setQ(e.target.value)} />
+            <input aria-label="Search specialties" placeholder="Search specialty or condition..." value={q} onChange={(e) => setQ(e.target.value)} />
           </div>
         </div>
       </div>
@@ -34,7 +34,10 @@ export default function ServicesPage() {
                   <Photo src={s.photo} alt={s.name} className="card-photo" ratio="16/10" />
                   <h3>{s.name}</h3><p>{s.desc}</p>
                   <p style={{ fontSize: 13, marginTop: 8 }}>{count} specialist{count !== 1 && "s"} available</p>
-                  <Link href={`/doctors?specialty=${s.id}`} className="link">See doctors →</Link>
+                  <div style={{ display: "flex", gap: 16, marginTop: 4 }}>
+                    <Link href={`/services/${s.id}`} className="link">Learn More →</Link>
+                    <Link href={`/doctors?specialty=${s.id}`} className="link">See doctors →</Link>
+                  </div>
                 </div>
               );
             })}

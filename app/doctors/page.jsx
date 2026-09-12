@@ -6,12 +6,12 @@ import Photo from "../../components/Photo";
 import { Icon } from "../../components/Icons";
 import {
   DOCTORS, SPECIALTIES, specialtyName, nextAvailable,
-  dateKey, slotStatus, TIMES,
+  dateKey, slotState, TIMES,
 } from "../../lib/data";
 
 function availableToday(id) {
   const key = dateKey(new Date());
-  return TIMES.some((t) => slotStatus(id, key, t) === "available");
+  return TIMES.some((t) => slotState(id, key, t) === "available");
 }
 
 function DirCard({ doctor }) {
@@ -29,10 +29,11 @@ function DirCard({ doctor }) {
         <span><b className="rating">★ {doctor.rating}</b> · {doctor.reviews} reviews</span>
         <span><b>{doctor.experience} years</b> experience</span>
       </div>
-      <div style={{ marginBottom: 4 }}>
+      <div style={{ marginBottom: 4, display: "flex", gap: 8, flexWrap: "wrap" }}>
         <span className="avail" style={today ? undefined : { background: "#F1F5F9", color: "#94A3B8" }}>
           {today ? "● Available Today" : "○ Fully booked today"}
         </span>
+        {doctor.tele && <span className="tele-badge">Video consult</span>}
       </div>
       <div className="next-box">
         <small>Next available</small>
@@ -54,6 +55,7 @@ function Finder() {
   const [gender, setGender] = useState("");
   const [language, setLanguage] = useState("");
   const [avail, setAvail] = useState("");
+  const [ctype, setCtype] = useState("");
 
   const results = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -64,9 +66,10 @@ function Finder() {
       if (gender && d.gender !== gender) return false;
       if (language && !d.languages.includes(language)) return false;
       if (avail === "today" && !availableToday(d.id)) return false;
+      if (ctype === "video" && !d.tele) return false;
       return true;
     });
-  }, [q, specialty, branch, gender, language, avail]);
+  }, [q, specialty, branch, gender, language, avail, ctype]);
 
   return (
     <>
@@ -76,7 +79,7 @@ function Finder() {
           <h1>Find the right doctor for your care</h1>
           <p>Search doctor, specialty or condition — then book in under a minute.</p>
           <div className="search-hero" style={{ maxWidth: 640 }}>
-            <input placeholder="Search doctor, specialty or condition..." value={q} onChange={(e) => setQ(e.target.value)} />
+            <input aria-label="Search doctors" placeholder="Search doctor, specialty or condition..." value={q} onChange={(e) => setQ(e.target.value)} />
           </div>
         </div>
       </div>
@@ -84,23 +87,28 @@ function Finder() {
       <section className="section" style={{ paddingTop: 30 }}>
         <div className="container">
           <div className="filter-bar">
-            <select value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
+            <select aria-label="Filter by specialty" value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
               <option value="">Specialty: All</option>
               {SPECIALTIES.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
-            <select value={branch} onChange={(e) => setBranch(e.target.value)}>
+            <select aria-label="Filter by location" value={branch} onChange={(e) => setBranch(e.target.value)}>
               <option value="">Location: All</option>
               <option>Central</option><option>South</option><option>Bandung</option>
             </select>
-            <select value={avail} onChange={(e) => setAvail(e.target.value)}>
+            <select aria-label="Filter by availability" value={avail} onChange={(e) => setAvail(e.target.value)}>
               <option value="">Availability: All</option>
               <option value="today">Available Today</option>
             </select>
-            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <select aria-label="Filter by consultation type" value={ctype} onChange={(e) => setCtype(e.target.value)}>
+              <option value="">Consultation: All</option>
+              <option value="inperson">In-Person</option>
+              <option value="video">Video Consult</option>
+            </select>
+            <select aria-label="Filter by gender" value={gender} onChange={(e) => setGender(e.target.value)}>
               <option value="">Gender: All</option>
               <option>Female</option><option>Male</option>
             </select>
-            <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+            <select aria-label="Filter by language" value={language} onChange={(e) => setLanguage(e.target.value)}>
               <option value="">Language: All</option>
               <option>Indonesian</option><option>English</option><option>Arabic</option>
             </select>

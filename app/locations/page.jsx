@@ -19,9 +19,9 @@ export default function LocationsPage() {
         <div className="container">
           <div className="breadcrumb"><a href="/">Home</a> / Locations</div>
           <h1>Find HIKUNA near you</h1>
-          <p>Enter your city or area to find the closest branch.</p>
+          <p>Enter your city or area to find the closest branch. Shown branches are concept demo locations.</p>
           <div className="search-hero" style={{ maxWidth: 560 }}>
-            <input placeholder="Search by city or location..." value={q} onChange={(e) => setQ(e.target.value)} />
+            <input aria-label="Search locations" placeholder="Search by city or location..." value={q} onChange={(e) => setQ(e.target.value)} />
           </div>
         </div>
       </div>

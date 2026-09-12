@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "../../../components/Reveal";
 import Photo from "../../../components/Photo";
-import { DOCTORS, getDoctor, specialtyName, rupiah, nextDays, fmtDay, dateKey, slotStatus, TIMES, BRANCH_NAMES } from "../../../lib/data";
+import { DOCTORS, getDoctor, specialtyName, rupiah, nextDays, fmtDay, dateKey, slotState, TIMES, BRANCH_NAMES } from "../../../lib/data";
 
 export function generateStaticParams() {
   return DOCTORS.map((d) => ({ id: d.id }));
@@ -52,6 +52,7 @@ export default async function DoctorProfile({ params }) {
                   <div className="info-cell"><small>Consultation Fee</small><strong>{rupiah(d.fee)}</strong></div>
                   <div className="info-cell"><small>Languages</small><strong>{d.languages.join(", ")}</strong></div>
                   <div className="info-cell"><small>Hospital</small><strong>{d.branches.map((b) => BRANCH_NAMES[b]).join(", ")}</strong></div>
+                  <div className="info-cell"><small>Consultation Type</small><strong>In-Person{d.tele ? " · Video" : ""}</strong></div>
                 </div>
                 <h3 style={{ marginTop: 22 }}>Areas of Expertise</h3>
                 <div className="loc-tags" style={{ marginTop: 12 }}>
@@ -71,7 +72,7 @@ export default async function DoctorProfile({ params }) {
                 <p style={{ marginBottom: 16 }}>{d.branches.map((b) => BRANCH_NAMES[b]).join(" · ")}</p>
                 {days.map((day) => {
                   const key = dateKey(day);
-                  const free = TIMES.filter((t) => slotStatus(d.id, key, t) === "available");
+                  const free = TIMES.filter((t) => slotState(d.id, key, t) === "available");
                   const f = fmtDay(day);
                   return (
                     <div key={key} className="summary-row">

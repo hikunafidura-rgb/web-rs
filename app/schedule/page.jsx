@@ -2,7 +2,7 @@
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-  DOCTORS, SPECIALTIES, specialtyName, daysFrom, dateKey, fmtDay, slotStatus, TIMES,
+  DOCTORS, SPECIALTIES, specialtyName, daysFrom, dateKey, fmtDay, slotState, TIMES,
 } from "../../lib/data";
 
 function Board() {
@@ -28,15 +28,15 @@ function Board() {
   return (
     <>
       <div className="filter-bar">
-        <select value={onlyDoctor} onChange={(e) => setOnlyDoctor(e.target.value)}>
+        <select aria-label="Filter by doctor" value={onlyDoctor} onChange={(e) => setOnlyDoctor(e.target.value)}>
           <option value="">All Doctors</option>
           {DOCTORS.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
         </select>
-        <select value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
+        <select aria-label="Filter by specialty" value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
           <option value="">All Specialties</option>
           {SPECIALTIES.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
         </select>
-        <select value={dayKey} onChange={(e) => setDayKey(e.target.value)}>
+        <select aria-label="Choose a date" value={dayKey} onChange={(e) => setDayKey(e.target.value)}>
           {days.map((d) => {
             const k = dateKey(d);
             const f = fmtDay(d);
@@ -61,20 +61,25 @@ function Board() {
               {TIMES.map((t) => (
                 <tr key={t}>
                   <td>{t}</td>
-                  {doctors.map((d) =>
-                    slotStatus(d.id, dayKey, t) === "available" ? (
-                      <td key={d.id}>
-                        <a
-                          title={`Book this time with ${d.name}`}
-                          href={`/appointment?doctor=${d.id}&date=${dayKey}&time=${encodeURIComponent(t)}`}
-                        >
-                          <button className="pill ok">Available</button>
-                        </a>
-                      </td>
-                    ) : (
-                      <td key={d.id}><span className="pill busy">Booked</span></td>
-                    )
-                  )}
+                  {doctors.map((d) => {
+                    const st = slotState(d.id, dayKey, t);
+                    if (st === "available") {
+                      return (
+                        <td key={d.id}>
+                          <a
+                            title={`Book this time with ${d.name}`}
+                            href={`/appointment?doctor=${d.id}&date=${dayKey}&time=${encodeURIComponent(t)}`}
+                          >
+                            <button className="pill ok">Available</button>
+                          </a>
+                        </td>
+                      );
+                    }
+                    if (st === "unavailable") {
+                      return <td key={d.id}><span className="pill off" title="Slot has passed">—</span></td>;
+                    }
+                    return <td key={d.id}><span className="pill busy">Booked</span></td>;
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -83,6 +88,7 @@ function Board() {
       )}
       <p style={{ color: "var(--muted)", marginTop: 16, fontSize: 14 }}>
         Select an <b>Available</b> slot to book this time — you will jump straight into the booking wizard.
+        Greyed-out slots have already passed today.
       </p>
     </>
   );

@@ -5,12 +5,13 @@ import Reveal from "./Reveal";
 const ITEMS = [
   { value: 15, suffix: "+", label: "Years of Excellence" },
   { value: 150, suffix: "+", label: "Specialist Doctors" },
-  { value: 250, suffix: "+", label: "Hospital Beds" },
+  { value: 320, suffix: "", label: "Hospital Beds" },
   { value: 98, suffix: "%", label: "Patient Satisfaction" },
 ];
 
 function Counter({ value, suffix }) {
-  const [n, setN] = useState(0);
+  // Start at the real value so "0+" is never visible; animate from 0 on view.
+  const [n, setN] = useState(value);
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
@@ -22,6 +23,7 @@ function Counter({ value, suffix }) {
         obs.disconnect();
         const t0 = performance.now();
         const dur = 1600;
+        setN(0);
         const tick = (t) => {
           const p = Math.min((t - t0) / dur, 1);
           setN(Math.round(value * (1 - Math.pow(1 - p, 3))));
@@ -58,6 +60,7 @@ export default function Stats() {
             </div>
           ))}
         </div>
+        <p className="demo-note">Illustrative concept data for demonstration.</p>
       </div>
     </Reveal>
   );

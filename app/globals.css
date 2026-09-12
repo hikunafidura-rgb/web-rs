@@ -22,7 +22,7 @@ img{max-width:100%}
 .reveal.visible{opacity:1;transform:none}
 
 /* ── buttons ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 30px;border-radius:999px;font-weight:600;font-size:15px;border:2px solid transparent;cursor:pointer;transition:.25s;font-family:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 30px;border-radius:14px;font-weight:600;font-size:15px;border:2px solid transparent;cursor:pointer;transition:.25s;font-family:inherit}
 .btn-primary{background:var(--blue);color:#fff;box-shadow:0 10px 24px rgba(22,119,255,.35)}
 .btn-primary:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 14px 32px rgba(22,119,255,.5)}
 .btn-teal{background:var(--teal);color:#fff;box-shadow:0 10px 24px rgba(43,184,168,.35)}
@@ -33,6 +33,32 @@ img{max-width:100%}
 .btn-white:hover{transform:translateY(-2px)}
 .btn-sm{padding:10px 22px;font-size:14px}
 .btn-block{width:100%}
+.btn-sm{padding:10px 22px;font-size:14px}
+.nav-inner{transition:height .3s ease}
+.navbar.scrolled .nav-inner{height:62px}
+
+/* visible keyboard focus */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(22,119,255,.55);outline-offset:2px}
+
+/* step transition */
+.step-pane{animation:fadeSlide .35s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* unavailable slot */
+.pill.off{background:transparent;color:#B6C2CF;border:1.5px dashed #D5DEE8;cursor:not-allowed}
+
+/* demo-data + tele badges */
+.demo-note{margin-top:26px;font-size:12px;color:#9db2c4;position:relative;z-index:1}
+.demo-note.dark{color:var(--muted)}
+.tele-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#0d7d70;background:var(--teal-soft);padding:5px 12px;border-radius:999px}
+.tele-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal)}
+
+/* reduced motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* ── navbar ── */
@@ -422,5 +448,5 @@ button.pill.ok:hover{background:var(--teal);color:#fff}
 .glass-doc__row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
 .glass-doc__chips{display:flex;align-items:center;gap:1rem}
 .glass-chip{display:inline-flex;align-items:center;gap:.45em;font-size:.9rem;font-weight:400;text-shadow:0 1px 8px rgba(0,0,0,.55)}
-.glass-btn{text-decoration:none;font-weight:600;font-size:.95rem;color:#0B1F33;padding:.7em 1.35em;border-radius:5rem;display:inline-flex;gap:.5rem;align-items:center;background:#fff;transition:.2s}
+.glass-btn{text-decoration:none;font-weight:600;font-size:.95rem;color:#0B1F33;padding:.7em 1.35em;border-radius:14px;display:inline-flex;gap:.5rem;align-items:center;background:#fff;transition:.2s}
 .glass-btn:hover{background:#2BB8A8;color:#fff}

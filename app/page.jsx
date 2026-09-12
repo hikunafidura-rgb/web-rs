@@ -35,9 +35,10 @@ export default function Home() {
               </div>
               <small><strong>★ 4.9/5</strong><br />from 2,400+ patient reviews</small>
             </div>
+            <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 10 }}>* Illustrative concept demo data.</p>
 
-            <form className="search-hero" action="/doctors" method="get">
-              <input name="q" placeholder="Search doctor name or specialty..." />
+            <form className="search-hero" action="/doctors" method="get" role="search">
+              <input name="q" aria-label="Search doctors" placeholder="Search doctor name or specialty..." />
               <button className="btn btn-teal btn-sm" type="submit">Search</button>
             </form>
           </div>
@@ -120,7 +121,10 @@ export default function Home() {
                 <div className="card">
                   <Photo src={s.photo} alt={s.name} className="card-photo" ratio="16/10" />
                   <h3>{s.name}</h3><p>{s.desc}</p>
-                  <Link href={`/doctors?specialty=${s.id}`} className="link">See doctors →</Link>
+                  <div style={{ display: "flex", gap: 16, marginTop: 14 }}>
+                    <Link href={`/services/${s.id}`} className="link">Learn More →</Link>
+                    <Link href={`/doctors?specialty=${s.id}`} className="link">See doctors →</Link>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -161,7 +165,7 @@ export default function Home() {
             <div className="section-head center">
               <span className="tag">Medical Check-Up</span>
               <h2>Take care of your health before problems begin</h2>
-              <p>HIKUNA Medical Check-Up packages for every stage of life.</p>
+              <p>HIKUNA Medical Check-Up packages for every stage of life. Concept pricing for demonstration.</p>
             </div>
           </Reveal>
           <div className="grid-3">
@@ -172,6 +176,7 @@ export default function Home() {
                   <Photo src={p.photo} alt={p.name} className="mcu-photo" ratio="16/9" />
                   <h3>{p.name}</h3><p>{p.desc}</p>
                   <div className="mcu-price">{rupiah(p.price)} <small>/ package</small></div>
+                  <p style={{ fontSize: 13, marginBottom: 4 }}>{p.duration} · {p.bestFor}</p>
                   <ul className="mcu-features">{p.features.map((f) => <li key={f}>{f}</li>)}</ul>
                   <Link href={`/checkup?package=${p.id}`} className={`btn ${p.highlight ? "btn-teal" : "btn-outline"} btn-block`}>
                     Book {p.name}

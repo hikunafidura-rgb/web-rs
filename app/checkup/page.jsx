@@ -60,6 +60,7 @@ function Booking() {
         </div>
         <div className="summary">
           <div className="summary-row"><span>Package</span><b>{selected.name}</b></div>
+          <div className="summary-row"><span>Duration</span><b>{selected.duration}</b></div>
           <div className="summary-row"><span>Price</span><b>{rupiah(selected.price)}</b></div>
         </div>
         <button className="btn btn-teal btn-block" disabled={!name.trim() || !dayKey} onClick={() => setOk(true)}>
@@ -77,7 +78,7 @@ export default function CheckupPage() {
         <div className="container">
           <div className="breadcrumb"><a href="/">Home</a> / Medical Check-Up</div>
           <h1>HIKUNA Medical Check-Up</h1>
-          <p>Take care of your health before problems begin.</p>
+          <p>Take care of your health before problems begin. Concept pricing for demonstration.</p>
         </div>
       </div>
       <section className="section" style={{ paddingTop: 30 }}>

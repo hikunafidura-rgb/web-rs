@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Photo from "../../components/Photo";
 import {
   SPECIALTIES, DOCTORS, getDoctor, specialtyName, rupiah,
-  nextDays, dateKey, fmtDay, slotStatus, TIMES,
+  nextDays, dateKey, fmtDay, slotState, TIMES,
 } from "../../lib/data";
 
 const STEPS = ["Specialty", "Doctor", "Date", "Time", "Confirm"];
@@ -30,7 +30,7 @@ function Wizard() {
   );
   const doctor = doctorId ? getDoctor(doctorId) : null;
   const slots = useMemo(
-    () => (doctor && dayKey ? TIMES.map((t) => ({ t, st: slotStatus(doctor.id, dayKey, t) })) : []),
+    () => (doctor && dayKey ? TIMES.map((t) => ({ t, st: slotState(doctor.id, dayKey, t) })) : []),
     [doctor, dayKey]
   );
   const freeCount = slots.filter((s) => s.st === "available").length;
@@ -88,7 +88,7 @@ function Wizard() {
         ))}
       </div>
 
-      <div className="card">
+      <div className="card step-pane" key={step}>
         {step === 0 && (
           <>
             <h2 style={{ fontSize: 24, marginBottom: 6 }}>Choose Specialty</h2>
@@ -130,7 +130,7 @@ function Wizard() {
               {days.map((d) => {
                 const k = dateKey(d);
                 const f = fmtDay(d);
-                const free = TIMES.filter((t) => slotStatus(doctor.id, k, t) === "available").length;
+                const free = TIMES.filter((t) => slotState(doctor.id, k, t) === "available").length;
                 return (
                   <div key={k} className={`day ${dayKey === k ? "selected" : ""}`}
                     onClick={() => { setDayKey(k); setTime(""); }}>
@@ -152,8 +152,8 @@ function Wizard() {
             <div className="slot-grid">
               {slots.map(({ t, st }) => (
                 <button key={t} className={`slot ${time === t ? "selected" : ""}`}
-                  disabled={st === "booked"} onClick={() => setTime(t)}>
-                  {t} · {st === "available" ? "Available" : "Booked"}
+                  disabled={st !== "available"} onClick={() => setTime(t)}>
+                  {t} · {st === "available" ? "Available" : st === "booked" ? "Booked" : "Passed"}
                 </button>
               ))}
             </div>
