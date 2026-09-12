@@ -130,7 +130,8 @@ function Wizard() {
                   }}>
                   <Photo src={d.photo} alt={d.name} className="opt-thumb" ratio="16/10" />
                   <strong>{d.name}</strong>
-                  <small>★ {d.rating} · {d.experience}y exp. · {rupiah(d.fee)}</small>
+                  <small>★ {d.rating} · {d.reviews} reviews</small>
+                  <small>{d.experience} years experience · {rupiah(d.fee)}</small>
                 </div>
               ))}
             </div>
