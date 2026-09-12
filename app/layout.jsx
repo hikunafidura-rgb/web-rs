@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import EmergencyFloat from "../components/EmergencyFloat";
+import { IconSprite } from "../components/Icons";
 
 export const metadata = {
   title: "HIKUNA Hospital — Compassionate Care, Advanced Medicine",
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <IconSprite />
         <Navbar />
         {children}
         <Footer />

@@ -413,3 +413,20 @@ button.pill.ok:hover{background:var(--teal);color:#fff}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .stat-num{font-size:38px}
 }
+
+/* ── glass overlay doctor card (scoped) ── */
+.glass-doc{color:#f2f5f8;max-width:30rem;border-radius:3rem;overflow:hidden;padding:.9rem;background:rgba(23,32,44,.55);box-shadow:inset 0 0 4px -2px #ffffff55,0 0 4px -2px #ffffff55;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;font-weight:300;transition:transform .28s,box-shadow .28s}
+.glass-doc:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(11,31,51,.3)}
+.glass-doc__inner{display:grid;grid-template-areas:"stack";position:relative;border-radius:2.2rem;overflow:hidden;box-shadow:inset 0 0 4px -2px #ffffff55,0 0 4px -2px #ffffff55}
+.glass-doc__inner::after{content:"";position:absolute;inset:0;border-radius:2.2rem;backdrop-filter:blur(100px);-webkit-backdrop-filter:blur(100px);-webkit-mask:linear-gradient(-14deg,black 30%,transparent 66%);mask:linear-gradient(-14deg,black 30%,transparent 66%)}
+.glass-doc__cover{grid-area:stack}
+.glass-doc__body{z-index:1;grid-area:stack;margin-top:auto;padding:1rem 1.6rem 1.4rem}
+.glass-doc__header{font-size:1.5rem;font-weight:600;display:flex;align-items:center;gap:.5rem;letter-spacing:-.3px}
+.glass-doc__header a:hover{color:#7fd4c7}
+.glass-doc__header .verify{color:#2BB8A8;flex:none}
+.glass-doc__bio{margin:.35rem 0 1rem;font-size:.93rem;color:#c8d6e5;font-weight:300}
+.glass-doc__row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.glass-doc__chips{display:flex;align-items:center;gap:1rem}
+.glass-chip{display:inline-flex;align-items:center;gap:.45em;font-size:.9rem;font-weight:400;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.glass-btn{text-decoration:none;font-weight:600;font-size:.95rem;color:#0B1F33;padding:.7em 1.35em;border-radius:5rem;display:inline-flex;gap:.5rem;align-items:center;background:#fff;transition:.2s}
+.glass-btn:hover{background:#2BB8A8;color:#fff}
