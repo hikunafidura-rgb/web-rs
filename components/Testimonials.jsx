@@ -2,11 +2,12 @@ import Reveal from "./Reveal";
 import Photo from "./Photo";
 
 const U = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=200&q=80`;
+const PX = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=200`;
 
 const REVIEWS = [
   {
     name: "Ratna W.", detail: "Cardiac patient · Central",
-    photo: U("photo-1544005313-94ddf0286df2"),
+    photo: PX("35332586"),
     text: "After my heart screening at HIKUNA, I finally understood my condition. Dr. Aisyah explained everything with such care and patience.",
   },
   {
@@ -16,7 +17,7 @@ const REVIEWS = [
   },
   {
     name: "Siti A.", detail: "Mother of pediatric patient",
-    photo: U("photo-1438761681033-6461ffad8d80"),
+    photo: PX("7930149"),
     text: "My son's pediatrician is thorough and wonderful with children. Booking took a minute and we never wait long.",
   },
 ];
