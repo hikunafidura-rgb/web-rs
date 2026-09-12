@@ -21,7 +21,7 @@ export default function LocationsPage() {
           <h1>Find HIKUNA near you</h1>
           <p>Enter your city or area to find the closest branch.</p>
           <div className="search-hero" style={{ maxWidth: 560 }}>
-            <input placeholder="📍 Enter city or location..." value={q} onChange={(e) => setQ(e.target.value)} />
+            <input placeholder="Search by city or location..." value={q} onChange={(e) => setQ(e.target.value)} />
           </div>
         </div>
       </div>
@@ -32,8 +32,9 @@ export default function LocationsPage() {
               <div className="card loc-card" key={l.id}>
                 <Photo src={l.photo} alt={l.name} className="loc-photo" ratio="16/9" />
                 <h3>{l.name}</h3>
-                <div className="addr">📍 {l.address}</div>
-                <p>🕐 {l.hours}<br />📞 {l.phone}</p>
+                {l.emergency && <p style={{ fontWeight: 700, color: "var(--red)" }}>Emergency Care Available</p>}
+                <div className="addr">{l.address}</div>
+                <p>{l.hours}<br />{l.phone}</p>
                 <div className="loc-tags">{l.tags.map((t) => <span key={t}>{t}</span>)}</div>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   <a className="btn btn-outline btn-sm"

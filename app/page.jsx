@@ -19,12 +19,12 @@ export default function Home() {
   return (
     <>
       {/* ── HERO : full-bleed hospital photo ── */}
-      <section className="hero hero-bg" style={{ backgroundImage: `linear-gradient(90deg,rgba(241,247,250,.98) 0%,rgba(241,247,250,.9) 45%,rgba(241,247,250,.3) 100%),url("${HERO_BG}")` }}>
+      <section className="hero hero-bg" style={{ backgroundImage: `linear-gradient(90deg,rgba(242,247,250,.98) 0%,rgba(242,247,250,.88) 42%,rgba(242,247,250,.25) 72%,rgba(11,31,51,.22) 100%),url("${HERO_BG}")` }}>
         <div className="container hero-grid">
           <div>
-            <span className="eyebrow">✨ Trusted Hospital & Medical Center</span>
+            <span className="eyebrow">HIKUNA Hospital</span>
             <h1>Exceptional Healthcare,<br /><span className="teal">Designed Around You.</span></h1>
-            <p className="sub">Discover trusted doctors, advanced medical services, and personalized healthcare — all in one place.</p>
+            <p className="sub">Trusted doctors, advanced medical technology, and personalized care — all in one place.</p>
             <div className="hero-btns">
               <Link href="/doctors" className="btn btn-primary">Find a Doctor →</Link>
               <Link href="/appointment" className="btn btn-outline">Book an Appointment</Link>
@@ -33,18 +33,18 @@ export default function Home() {
               <div className="avatar-stack">
                 {featured.map((d) => <img key={d.id} src={d.photo} alt={d.name} loading="lazy" />)}
               </div>
-              <small><strong>⭐ 4.9/5</strong><br />from 2,400+ patient reviews</small>
+              <small><strong>★ 4.9/5</strong><br />from 2,400+ patient reviews</small>
             </div>
 
             <form className="search-hero" action="/doctors" method="get">
-              <input name="q" placeholder="🔎 Search doctor name or specialty..." />
+              <input name="q" placeholder="Search doctor name or specialty..." />
               <button className="btn btn-teal btn-sm" type="submit">Search</button>
             </form>
           </div>
 
           <div className="hero-cards">
             <div className="glass-card">
-              <strong>🚑 24/7 Emergency Care</strong>
+              <strong>24/7 Emergency Care</strong>
               <span>We&apos;re here when you need us.</span>
             </div>
             <div className="glass-card">
@@ -52,8 +52,8 @@ export default function Home() {
               <span>Across 7 centers of excellence</span>
             </div>
             <div className="glass-card">
-              <strong>🏆 Nationally Accredited</strong>
-              <span className="rating">⭐ 4.9 · 2,400+ patient reviews</span>
+              <strong>Nationally Accredited</strong>
+              <span className="rating">★ 4.9 · 2,400+ patient reviews</span>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function Home() {
                 <h3 style={{ marginBottom: 2 }}>24/7 Emergency Care — we&apos;re here when you need us.</h3>
                 <p>One tap to reach our emergency team, day or night.</p>
               </div>
-              <a href="tel:+62215550911" className="btn btn-primary">📞 +62 21 555 0911</a>
+              <a href="tel:+62215550911" className="btn btn-primary">+62 21 555 0911</a>
             </div>
           </Reveal>
         </div>
@@ -201,8 +201,8 @@ export default function Home() {
                 <div className="card loc-card">
                   <Photo src={l.photo} alt={l.name} className="loc-photo" ratio="16/9" />
                   <h3>{l.name}</h3>
-                  <div className="addr">📍 {l.address}</div>
-                  <p>🕐 {l.hours}<br />📞 {l.phone}</p>
+                  <div className="addr">{l.address}</div>
+                  <p>{l.hours}<br />{l.phone}</p>
                   <Link href="/locations" className="link">Get Directions →</Link>
                 </div>
               </Reveal>
@@ -218,7 +218,7 @@ export default function Home() {
             <div className="cta">
               <h2>Ready to feel better?</h2>
               <p>Book in under a minute with our guided appointment wizard.</p>
-              <Link href="/appointment" className="btn btn-white">📅 Start Booking →</Link>
+              <Link href="/appointment" className="btn btn-white">Start Booking</Link>
             </div>
           </Reveal>
         </div>

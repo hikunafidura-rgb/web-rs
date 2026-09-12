@@ -7,7 +7,7 @@ import {
   nextDays, dateKey, fmtDay, slotStatus, TIMES,
 } from "../../lib/data";
 
-const STEPS = ["Specialty", "Doctor", "Date & Time", "Confirm"];
+const STEPS = ["Specialty", "Doctor", "Date", "Time", "Confirm"];
 
 function Wizard() {
   const params = useSearchParams();
@@ -20,6 +20,7 @@ function Wizard() {
   const [dayKey, setDayKey] = useState(params.get("date") ?? "");
   const [time, setTime] = useState(params.get("time") ?? "");
   const [name, setName] = useState("");
+  const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(null);
 
   const days = useMemo(() => nextDays(14), []);
@@ -32,6 +33,7 @@ function Wizard() {
     () => (doctor && dayKey ? TIMES.map((t) => ({ t, st: slotStatus(doctor.id, dayKey, t) })) : []),
     [doctor, dayKey]
   );
+  const freeCount = slots.filter((s) => s.st === "available").length;
   const dayLabel = dayKey
     ? fmtDay(days.find((d) => dateKey(d) === dayKey) ?? new Date(dayKey)).full
     : "";
@@ -39,19 +41,24 @@ function Wizard() {
   const canNext =
     (step === 0 && !!specialty) ||
     (step === 1 && !!doctor) ||
-    (step === 2 && !!dayKey && !!time);
+    (step === 2 && !!dayKey) ||
+    (step === 3 && !!time);
 
   function confirm() {
-    if (!name.trim()) return;
-    const code = "HKN-" + Math.random().toString(36).slice(2, 7).toUpperCase();
-    setDone({ code });
+    if (!name.trim() || busy) return;
+    setBusy(true);
+    setTimeout(() => {
+      const code = "HKN-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+      setBusy(false);
+      setDone({ code });
+    }, 1400);
   }
 
   if (done) {
     return (
       <div className="card success">
         <div className="check-circle">✓</div>
-        <h2>Booking Confirmed!</h2>
+        <h2>Booking Confirmed</h2>
         <p style={{ color: "var(--muted)" }}>We&apos;ve sent the details to your WhatsApp. Please arrive 15 minutes early.</p>
         <div className="booking-code">{done.code}</div>
         <div className="summary" style={{ textAlign: "left" }}>
@@ -60,10 +67,11 @@ function Wizard() {
           <div className="summary-row"><span>Specialty</span><b>{specialtyName(specialty)}</b></div>
           <div className="summary-row"><span>Date</span><b>{dayLabel}</b></div>
           <div className="summary-row"><span>Time</span><b>{time}</b></div>
+          <div className="summary-row"><span>Location</span><b>HIKUNA Central Hospital, Jakarta</b></div>
           <div className="summary-row"><span>Fee</span><b>{rupiah(doctor.fee)}</b></div>
         </div>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/dashboard" className="btn btn-primary">View Dashboard →</a>
+          <a href="/dashboard" className="btn btn-primary">View Dashboard</a>
           <a href="/" className="btn btn-outline">Back to Home</a>
         </div>
       </div>
@@ -104,10 +112,10 @@ function Wizard() {
             <div className="opt-grid">
               {doctors.map((d) => (
                 <div key={d.id} className={`opt ${doctorId === d.id ? "selected" : ""}`}
-                  onClick={() => { setDoctorId(d.id); setTime(""); }}>
+                  onClick={() => { setDoctorId(d.id); setDayKey(""); setTime(""); }}>
                   <Photo src={d.photo} alt={d.name} className="opt-thumb" ratio="16/10" />
                   <strong>{d.name}</strong>
-                  <small>⭐ {d.rating} · {d.experience}y exp. · {rupiah(d.fee)}</small>
+                  <small>★ {d.rating} · {d.experience}y exp. · {rupiah(d.fee)}</small>
                 </div>
               ))}
             </div>
@@ -116,36 +124,43 @@ function Wizard() {
 
         {step === 2 && (
           <>
-            <h2 style={{ fontSize: 24, marginBottom: 6 }}>Choose Date & Time</h2>
-            <p style={{ color: "var(--muted)", marginBottom: 20 }}>With {doctor?.name}</p>
+            <h2 style={{ fontSize: 24, marginBottom: 6 }}>Choose Date</h2>
+            <p style={{ color: "var(--muted)", marginBottom: 20 }}>With {doctor?.name} — modern calendar, 14 days ahead</p>
             <div className="day-strip">
               {days.map((d) => {
                 const k = dateKey(d);
                 const f = fmtDay(d);
+                const free = TIMES.filter((t) => slotStatus(doctor.id, k, t) === "available").length;
                 return (
                   <div key={k} className={`day ${dayKey === k ? "selected" : ""}`}
                     onClick={() => { setDayKey(k); setTime(""); }}>
                     <small>{k === dateKey(new Date()) ? "Today" : f.dow}</small>
-                    <strong>{f.num}</strong><span>{f.mon}</span>
+                    <strong>{f.num}</strong><span>{f.mon} · {free} free</span>
                   </div>
                 );
               })}
             </div>
-            {dayKey ? (
-              <>
-                <p style={{ fontWeight: 700, marginBottom: 12 }}>Available slots:</p>
-                <div className="slot-grid">
-                  {slots.map(({ t, st }) => (
-                    <button key={t} className={`slot ${time === t ? "selected" : ""}`}
-                      disabled={st === "booked"} onClick={() => setTime(t)}>{t}</button>
-                  ))}
-                </div>
-              </>
-            ) : <p style={{ color: "var(--muted)" }}>← Pick a date first to see available slots.</p>}
           </>
         )}
 
         {step === 3 && (
+          <>
+            <h2 style={{ fontSize: 24, marginBottom: 6 }}>Choose Time</h2>
+            <p style={{ color: "var(--muted)", marginBottom: 20 }}>
+              {dayLabel} with {doctor?.name} — {freeCount} slot{freeCount !== 1 && "s"} available
+            </p>
+            <div className="slot-grid">
+              {slots.map(({ t, st }) => (
+                <button key={t} className={`slot ${time === t ? "selected" : ""}`}
+                  disabled={st === "booked"} onClick={() => setTime(t)}>
+                  {t} · {st === "available" ? "Available" : "Booked"}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {step === 4 && (
           <>
             <h2 style={{ fontSize: 24, marginBottom: 6 }}>Confirm Appointment</h2>
             <p style={{ color: "var(--muted)", marginBottom: 20 }}>Double-check everything before confirming.</p>
@@ -154,7 +169,7 @@ function Wizard() {
               <div className="summary-row"><span>Specialty</span><b>{specialtyName(specialty)}</b></div>
               <div className="summary-row"><span>Date</span><b>{dayLabel}</b></div>
               <div className="summary-row"><span>Time</span><b>{time}</b></div>
-              <div className="summary-row"><span>Location</span><b>HIKUNA Central, Jakarta</b></div>
+              <div className="summary-row"><span>Location</span><b>HIKUNA Central Hospital, Jakarta</b></div>
               <div className="summary-row"><span>Fee</span><b>{rupiah(doctor.fee)}</b></div>
             </div>
             <div className="field">
@@ -165,11 +180,13 @@ function Wizard() {
         )}
 
         <div className="wizard-nav">
-          <button className="btn btn-outline" disabled={step === 0} onClick={() => setStep(step - 1)}>← Back</button>
-          {step < 3 ? (
-            <button className="btn btn-primary" disabled={!canNext} onClick={() => setStep(step + 1)}>Continue →</button>
+          <button className="btn btn-outline" disabled={step === 0} onClick={() => setStep(step - 1)}>Back</button>
+          {step < 4 ? (
+            <button className="btn btn-primary" disabled={!canNext} onClick={() => setStep(step + 1)}>Continue</button>
           ) : (
-            <button className="btn btn-teal" disabled={!name.trim()} onClick={confirm}>✓ Confirm Booking</button>
+            <button className="btn btn-teal" disabled={!name.trim() || busy} onClick={confirm}>
+              {busy ? <><span className="spinner" /> Processing...</> : "Confirm Booking"}
+            </button>
           )}
         </div>
       </div>
@@ -184,7 +201,7 @@ export default function AppointmentPage() {
         <div className="container">
           <div className="breadcrumb"><a href="/">Home</a> / Book Appointment</div>
           <h1>Book Appointment</h1>
-          <p>Four quick steps — specialty, doctor, schedule, confirm.</p>
+          <p>Five quick steps — specialty, doctor, date, time, confirm.</p>
         </div>
       </div>
       <section className="section" style={{ paddingTop: 30 }}>

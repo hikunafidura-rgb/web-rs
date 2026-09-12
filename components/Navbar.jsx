@@ -40,7 +40,7 @@ export default function Navbar() {
             </a>
           ))}
           <a href="/appointment" className="btn btn-primary btn-sm" onClick={() => setOpen(false)}>
-            📅 Book Appointment
+            Book Appointment
           </a>
         </nav>
         <button className="hamburger" aria-label="Menu" onClick={() => setOpen(!open)}>

@@ -10,8 +10,8 @@ export default function Footer() {
             <Logo light />
           </div>
           <p>Compassionate Care, Advanced Medicine.</p>
-          <p>📍 Jl. Sehat Bersama No. 88, Jakarta</p>
-          <p>📞 +62 21 555 0188 · 24/7</p>
+          <p>Jl. Sehat Bersama No. 88, Jakarta</p>
+          <p>+62 21 555 0188 · 24/7</p>
         </div>
         <div>
           <h4>Patients</h4>
@@ -29,9 +29,9 @@ export default function Footer() {
         </div>
         <div>
           <h4>Emergency 24/7</h4>
-          <p>🚑 Need immediate help?</p>
+          <p>Need immediate help?</p>
           <p style={{ color: "#fff", fontWeight: 800, fontSize: 18 }}>+62 21 555 0911</p>
-          <p>✉️ care@hikunahospital.id</p>
+          <p>care@hikunahospital.id</p>
         </div>
       </div>
       <div className="copyright">© 2026 HIKUNA Hospital. Compassionate Care, Advanced Medicine.</div>

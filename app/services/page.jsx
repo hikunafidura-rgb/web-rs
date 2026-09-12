@@ -9,7 +9,7 @@ export default function ServicesPage() {
   const results = useMemo(() => {
     const n = q.trim().toLowerCase();
     if (!n) return SPECIALTIES;
-    return SPECIALTIES.filter((s) => (s.name + " " + s.desc).toLowerCase().includes(n));
+    return SPECIALTIES.filter((s) => (s.name + " " + s.desc + " " + (s.keywords || []).join(" ")).toLowerCase().includes(n));
   }, [q]);
 
   return (
@@ -18,9 +18,9 @@ export default function ServicesPage() {
         <div className="container">
           <div className="breadcrumb"><a href="/">Home</a> / Services</div>
           <h1>Find the right care for you</h1>
-          <p>What are you looking for? Browse our centers of excellence.</p>
+          <p>Explore our medical specialties and find the right specialist for your needs.</p>
           <div className="search-hero" style={{ maxWidth: 560 }}>
-            <input placeholder="🔎 e.g. heart, brain, eye..." value={q} onChange={(e) => setQ(e.target.value)} />
+            <input placeholder="Search specialty or condition..." value={q} onChange={(e) => setQ(e.target.value)} />
           </div>
         </div>
       </div>

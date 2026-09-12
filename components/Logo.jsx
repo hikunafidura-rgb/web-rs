@@ -10,9 +10,9 @@ export default function Logo({ light = false }) {
           </linearGradient>
         </defs>
         <rect width="48" height="48" rx="14" fill="url(#hikunaBrand)" />
-        <path d="M15 11v26M33 11v26M15 24h18" stroke="#fff" strokeWidth="7" strokeLinecap="round" fill="none" />
-        <rect x="30.5" y="4.5" width="7" height="18" rx="2.5" fill="#24B7A5" />
-        <rect x="24" y="11" width="18" height="7" rx="2.5" fill="#24B7A5" />
+        <path d="M14.5 10v28M33.5 10v28" stroke="#fff" strokeWidth="7.5" strokeLinecap="round" fill="none" />
+        <rect x="13" y="20.5" width="22" height="7" rx="2.5" fill="#fff" />
+        <rect x="20.5" y="13" width="7" height="22" rx="2.5" fill="#25B7A6" />
       </svg>
       <span className={`brand-text${light ? " light" : ""}`}>
         HIKUNA<small>Hospital & Medical Center</small>
