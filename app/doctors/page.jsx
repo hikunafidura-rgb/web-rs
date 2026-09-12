@@ -5,8 +5,8 @@ import Link from "next/link";
 import Photo from "../../components/Photo";
 import { Icon } from "../../components/Icons";
 import {
-  DOCTORS, SPECIALTIES, specialtyName, nextAvailable,
-  dateKey, slotState, TIMES,
+  DOCTORS, SPECIALTIES, specialtyName, nextAvailable, BRANCH_NAMES,
+  dateKey, slotState, TIMES, availabilityRank,
 } from "../../lib/data";
 
 function availableToday(id) {
@@ -25,6 +25,9 @@ function DirCard({ doctor }) {
         <Icon name="i-check" size={20} className="verify" />
       </h3>
       <div className="dir-title">{doctor.title} · {specialtyName(doctor.specialty)}</div>
+      <div className="doc-meta" style={{ marginBottom: 6 }}>
+        <span>{BRANCH_NAMES[doctor.branches[0]]}</span>
+      </div>
       <div className="doc-meta">
         <span><b className="rating">★ {doctor.rating}</b> · {doctor.reviews} reviews</span>
         <span><b>{doctor.experience} years</b> experience</span>
@@ -56,10 +59,11 @@ function Finder() {
   const [language, setLanguage] = useState("");
   const [avail, setAvail] = useState("");
   const [ctype, setCtype] = useState("");
+  const [sort, setSort] = useState("recommended");
 
   const results = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return DOCTORS.filter((d) => {
+    const list = DOCTORS.filter((d) => {
       if (needle && !(d.name.toLowerCase().includes(needle) || specialtyName(d.specialty).toLowerCase().includes(needle))) return false;
       if (specialty && d.specialty !== specialty) return false;
       if (branch && !d.branches.includes(branch)) return false;
@@ -69,7 +73,11 @@ function Finder() {
       if (ctype === "video" && !d.tele) return false;
       return true;
     });
-  }, [q, specialty, branch, gender, language, avail, ctype]);
+    if (sort === "rated") list.sort((a, b) => b.rating - a.rating);
+    else if (sort === "experienced") list.sort((a, b) => b.experience - a.experience);
+    else if (sort === "soonest") list.sort((a, b) => availabilityRank(a.id) - availabilityRank(b.id));
+    return list;
+  }, [q, specialty, branch, gender, language, avail, ctype, sort]);
 
   return (
     <>
@@ -111,6 +119,12 @@ function Finder() {
             <select aria-label="Filter by language" value={language} onChange={(e) => setLanguage(e.target.value)}>
               <option value="">Language: All</option>
               <option>Indonesian</option><option>English</option><option>Arabic</option>
+            </select>
+            <select aria-label="Sort doctors" value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="recommended">Sort: Recommended</option>
+              <option value="rated">Highest Rated</option>
+              <option value="experienced">Most Experienced</option>
+              <option value="soonest">Available Soonest</option>
             </select>
           </div>
 

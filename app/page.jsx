@@ -4,7 +4,8 @@ import Photo from "../components/Photo";
 import DoctorCard from "../components/DoctorCard";
 import Stats from "../components/Stats";
 import Testimonials from "../components/Testimonials";
-import { DOCTORS, SPECIALTIES, LOCATIONS, MCU_PACKAGES, HERO_BG, SERVICES_BG, WHY_BG, MCU_BG, rupiah } from "../lib/data";
+import GroupLogo from "../components/GroupLogo";
+import { DOCTORS, SPECIALTIES, LOCATIONS, MCU_PACKAGES, HERO_BG, SERVICES_BG, WHY_BG, MCU_BG, GROUP_HQ, rupiah } from "../lib/data";
 
 const WHY = [
   ["01", "Expert Doctors", "Experienced specialists dedicated to your care."],
@@ -135,25 +136,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHY : doctor & patient photo with white overlay ── */}
-      <section className="section section-photo deep" id="about" style={{ "--sec-bg": `url("${WHY_BG}")` }}>
-        <div className="container">
+      {/* ── WHY : photo + benefits split ── */}
+      <section className="section" id="about">
+        <div className="container split">
           <Reveal>
-            <div className="section-head">
-              <span className="tag">Why HIKUNA?</span>
-              <h2>Healthcare that puts you first</h2>
-              <p>Compassionate Care, Advanced Medicine — in everything we do.</p>
-            </div>
+            <Photo src={WHY_BG} alt="Doctor consulting a patient at HIKUNA Hospital" ratio="4/4.7" style={{ borderRadius: 24 }} />
           </Reveal>
-          <div className="grid-4">
-            {WHY.map(([no, title, desc], i) => (
-              <Reveal key={no} delay={i * 100}>
-                <div className="card">
-                  <div style={{ fontWeight: 800, color: "var(--teal)", fontSize: 15 }}>{no}</div>
-                  <h3 style={{ marginTop: 8 }}>{title}</h3><p>{desc}</p>
-                </div>
-              </Reveal>
-            ))}
+          <div>
+            <Reveal>
+              <div className="section-head" style={{ marginBottom: 28 }}>
+                <span className="tag">Why HIKUNA?</span>
+                <h2>Healthcare that puts you first</h2>
+                <p>Compassionate Care, Advanced Medicine — in everything we do.</p>
+              </div>
+            </Reveal>
+            <div className="grid-2">
+              {WHY.map(([no, title, desc], i) => (
+                <Reveal key={no} delay={i * 80}>
+                  <div className="card" style={{ padding: 24 }}>
+                    <div style={{ fontWeight: 800, color: "var(--teal)", fontSize: 14 }}>{no}</div>
+                    <h3 style={{ marginTop: 6, fontSize: 17 }}>{title}</h3><p>{desc}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -176,7 +182,7 @@ export default function Home() {
                   <Photo src={p.photo} alt={p.name} className="mcu-photo" ratio="16/9" />
                   <h3>{p.name}</h3><p>{p.desc}</p>
                   <div className="mcu-price">{rupiah(p.price)} <small>/ package</small></div>
-                  <p style={{ fontSize: 13, marginBottom: 4 }}>{p.duration} · {p.bestFor}</p>
+                  <p style={{ fontSize: 13, marginBottom: 4 }}>{p.duration} · Suitable for {p.bestFor.toLowerCase()}</p>
                   <ul className="mcu-features">{p.features.map((f) => <li key={f}>{f}</li>)}</ul>
                   <Link href={`/checkup?package=${p.id}`} className={`btn ${p.highlight ? "btn-teal" : "btn-outline"} btn-block`}>
                     Book {p.name}
@@ -224,6 +230,29 @@ export default function Home() {
               <h2>Ready to feel better?</h2>
               <p>Book in under a minute with our guided appointment wizard.</p>
               <Link href="/appointment" className="btn btn-white">Start Booking</Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── HIKUNA GROUP : final brand statement before footer ── */}
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <Reveal>
+            <div className="group-panel">
+              <div>
+                <span className="group-eyebrow">Part of HIKUNA Group</span>
+                <h2>Healthcare, backed by a broader vision.</h2>
+                <p>
+                  HIKUNA Hospital is part of HIKUNA GROUP, a growing organization
+                  committed to innovation, excellence, and better healthcare experiences.
+                </p>
+                <div style={{ margin: "22px 0" }}>
+                  <GroupLogo />
+                </div>
+                <Link href="/group" className="btn btn-white">Discover HIKUNA GROUP</Link>
+              </div>
+              <Photo src={GROUP_HQ} alt="HIKUNA GROUP corporate headquarters" ratio="4/3.4" className="group-photo" />
             </div>
           </Reveal>
         </div>

@@ -2,10 +2,21 @@ import Link from "next/link";
 import Photo from "../../components/Photo";
 import { getDoctor, specialtyName } from "../../lib/data";
 
+const U = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`;
+
 const QUICK = [
-  { title: "Medical Records", desc: "Lab results, prescriptions and visit history.", photo: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80", href: "/dashboard", link: "Open records →" },
-  { title: "Prescriptions", desc: "2 active prescriptions, 1 refill available.", photo: "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=600&q=80", href: "/dashboard", link: "Manage →" },
-  { title: "Check-Up", desc: "Your annual screening is due next month.", photo: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=80", href: "/checkup", link: "Book check-up →" },
+  {
+    title: "Book Appointment", desc: "Seven quick steps to see the right doctor.",
+    photo: U("photo-1576091160550-2173dba999ef"), href: "/appointment", link: "Start booking →",
+  },
+  {
+    title: "Find a Doctor", desc: "Search specialists by name, schedule or language.",
+    photo: U("photo-1559839734-2b71ea197ec2"), href: "/doctors", link: "Browse doctors →",
+  },
+  {
+    title: "Check-Up", desc: "Your annual screening is due next month.",
+    photo: U("photo-1516549655169-df83a0774514"), href: "/checkup", link: "Book check-up →",
+  },
 ];
 
 export default function DashboardPage() {

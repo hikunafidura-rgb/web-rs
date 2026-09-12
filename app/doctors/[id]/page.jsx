@@ -60,6 +60,8 @@ export default async function DoctorProfile({ params }) {
                 </div>
                 <h3 style={{ marginTop: 22 }}>Education</h3>
                 <ul className="edu-list">{d.education.map((e) => <li key={e}>{e}</li>)}</ul>
+                <h3 style={{ marginTop: 22 }}>Certifications</h3>
+                <ul className="edu-list">{d.certs.map((c) => <li key={c}>{c}</li>)}</ul>
                 <h3 style={{ marginTop: 22 }}>Professional Experience</h3>
                 <ul className="edu-list">{d.career.map((c) => <li key={c}>{c}</li>)}</ul>
               </div>

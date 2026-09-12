@@ -38,7 +38,8 @@ function Booking() {
               </div>
               <div>
                 <strong style={{ fontSize: 18 }}>{p.name} — {rupiah(p.price)}</strong>
-                <div style={{ color: "var(--muted)", fontSize: 14 }}>{p.features.join(" · ")}</div>
+                <div style={{ color: "var(--muted)", fontSize: 14 }}>{p.duration} · Suitable for {p.bestFor.toLowerCase()}</div>
+                <div style={{ color: "var(--muted)", fontSize: 13 }}>{p.features.join(" · ")}</div>
               </div>
             </div>
           ))}

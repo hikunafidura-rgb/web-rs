@@ -4,10 +4,15 @@ import { useSearchParams } from "next/navigation";
 import Photo from "../../components/Photo";
 import {
   SPECIALTIES, DOCTORS, getDoctor, specialtyName, rupiah,
-  nextDays, dateKey, fmtDay, slotState, TIMES,
+  nextDays, dateKey, fmtDay, slotState, TIMES, BRANCH_NAMES, LOCATIONS,
 } from "../../lib/data";
 
-const STEPS = ["Specialty", "Doctor", "Date", "Time", "Confirm"];
+const STEPS = ["Specialty", "Doctor", "Location", "Date", "Time", "Patient", "Confirm"];
+
+function branchInfo(key) {
+  const loc = LOCATIONS.find((l) => l.id === key.toLowerCase());
+  return loc ?? { name: BRANCH_NAMES[key], address: "", hours: "" };
+}
 
 function Wizard() {
   const params = useSearchParams();
@@ -17,9 +22,12 @@ function Wizard() {
     return params.get("specialty") ?? doc?.specialty ?? "";
   });
   const [doctorId, setDoctorId] = useState(params.get("doctor") ?? "");
+  const [branch, setBranch] = useState("Central");
   const [dayKey, setDayKey] = useState(params.get("date") ?? "");
   const [time, setTime] = useState(params.get("time") ?? "");
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(null);
 
@@ -29,6 +37,8 @@ function Wizard() {
     [specialty]
   );
   const doctor = doctorId ? getDoctor(doctorId) : null;
+  const branches = doctor?.branches ?? ["Central", "South", "Bandung"];
+  const loc = branchInfo(branch);
   const slots = useMemo(
     () => (doctor && dayKey ? TIMES.map((t) => ({ t, st: slotState(doctor.id, dayKey, t) })) : []),
     [doctor, dayKey]
@@ -41,11 +51,13 @@ function Wizard() {
   const canNext =
     (step === 0 && !!specialty) ||
     (step === 1 && !!doctor) ||
-    (step === 2 && !!dayKey) ||
-    (step === 3 && !!time);
+    (step === 2 && !!branch) ||
+    (step === 3 && !!dayKey) ||
+    (step === 4 && !!time) ||
+    (step === 5 && !!name.trim() && !!phone.trim());
 
   function confirm() {
-    if (!name.trim() || busy) return;
+    if (!name.trim() || !phone.trim() || busy) return;
     setBusy(true);
     setTimeout(() => {
       const code = "HKN-" + Math.random().toString(36).slice(2, 7).toUpperCase();
@@ -58,16 +70,16 @@ function Wizard() {
     return (
       <div className="card success">
         <div className="check-circle">✓</div>
-        <h2>Booking Confirmed</h2>
+        <h2>Appointment Confirmed</h2>
         <p style={{ color: "var(--muted)" }}>We&apos;ve sent the details to your WhatsApp. Please arrive 15 minutes early.</p>
         <div className="booking-code">{done.code}</div>
         <div className="summary" style={{ textAlign: "left" }}>
-          <div className="summary-row"><span>Patient</span><b>{name}</b></div>
           <div className="summary-row"><span>Doctor</span><b>{doctor.name}</b></div>
           <div className="summary-row"><span>Specialty</span><b>{specialtyName(specialty)}</b></div>
+          <div className="summary-row"><span>Hospital</span><b>{loc.name}</b></div>
           <div className="summary-row"><span>Date</span><b>{dayLabel}</b></div>
           <div className="summary-row"><span>Time</span><b>{time}</b></div>
-          <div className="summary-row"><span>Location</span><b>HIKUNA Central Hospital, Jakarta</b></div>
+          <div className="summary-row"><span>Patient</span><b>{name} · {phone}</b></div>
           <div className="summary-row"><span>Fee</span><b>{rupiah(doctor.fee)}</b></div>
         </div>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
@@ -112,7 +124,10 @@ function Wizard() {
             <div className="opt-grid">
               {doctors.map((d) => (
                 <div key={d.id} className={`opt ${doctorId === d.id ? "selected" : ""}`}
-                  onClick={() => { setDoctorId(d.id); setDayKey(""); setTime(""); }}>
+                  onClick={() => {
+                    setDoctorId(d.id); setDayKey(""); setTime("");
+                    if (!d.branches.includes(branch)) setBranch(d.branches[0]);
+                  }}>
                   <Photo src={d.photo} alt={d.name} className="opt-thumb" ratio="16/10" />
                   <strong>{d.name}</strong>
                   <small>★ {d.rating} · {d.experience}y exp. · {rupiah(d.fee)}</small>
@@ -124,8 +139,26 @@ function Wizard() {
 
         {step === 2 && (
           <>
+            <h2 style={{ fontSize: 24, marginBottom: 6 }}>Choose Location</h2>
+            <p style={{ color: "var(--muted)", marginBottom: 20 }}>Where would you like to see {doctor?.name}?</p>
+            <div className="opt-grid">
+              {branches.map((b) => {
+                const info = branchInfo(b);
+                return (
+                  <div key={b} className={`opt ${branch === b ? "selected" : ""}`} onClick={() => setBranch(b)}>
+                    <strong>{info.name}</strong>
+                    <small>{info.address || info.hours}</small>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {step === 3 && (
+          <>
             <h2 style={{ fontSize: 24, marginBottom: 6 }}>Choose Date</h2>
-            <p style={{ color: "var(--muted)", marginBottom: 20 }}>With {doctor?.name} — modern calendar, 14 days ahead</p>
+            <p style={{ color: "var(--muted)", marginBottom: 20 }}>With {doctor?.name} at {loc.name}</p>
             <div className="day-strip">
               {days.map((d) => {
                 const k = dateKey(d);
@@ -143,7 +176,7 @@ function Wizard() {
           </>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <>
             <h2 style={{ fontSize: 24, marginBottom: 6 }}>Choose Time</h2>
             <p style={{ color: "var(--muted)", marginBottom: 20 }}>
@@ -160,31 +193,47 @@ function Wizard() {
           </>
         )}
 
-        {step === 4 && (
+        {step === 5 && (
+          <>
+            <h2 style={{ fontSize: 24, marginBottom: 6 }}>Patient Information</h2>
+            <p style={{ color: "var(--muted)", marginBottom: 20 }}>Who is this appointment for?</p>
+            <div className="field">
+              <label htmlFor="wiz-name">Patient full name</label>
+              <input id="wiz-name" placeholder="e.g. Budi Santoso" value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+            <div className="field">
+              <label htmlFor="wiz-phone">WhatsApp number</label>
+              <input id="wiz-phone" placeholder="e.g. 0812 3456 7890" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            </div>
+            <div className="field">
+              <label htmlFor="wiz-notes">Notes for the doctor <span style={{ fontWeight: 400 }}>(optional)</span></label>
+              <input id="wiz-notes" placeholder="e.g. recurring headache for 2 weeks" value={notes} onChange={(e) => setNotes(e.target.value)} />
+            </div>
+          </>
+        )}
+
+        {step === 6 && (
           <>
             <h2 style={{ fontSize: 24, marginBottom: 6 }}>Confirm Appointment</h2>
             <p style={{ color: "var(--muted)", marginBottom: 20 }}>Double-check everything before confirming.</p>
             <div className="summary">
               <div className="summary-row"><span>Doctor</span><b>{doctor.name}</b></div>
               <div className="summary-row"><span>Specialty</span><b>{specialtyName(specialty)}</b></div>
+              <div className="summary-row"><span>Hospital</span><b>{loc.name}</b></div>
               <div className="summary-row"><span>Date</span><b>{dayLabel}</b></div>
               <div className="summary-row"><span>Time</span><b>{time}</b></div>
-              <div className="summary-row"><span>Location</span><b>HIKUNA Central Hospital, Jakarta</b></div>
+              <div className="summary-row"><span>Patient</span><b>{name} · {phone}</b></div>
               <div className="summary-row"><span>Fee</span><b>{rupiah(doctor.fee)}</b></div>
-            </div>
-            <div className="field">
-              <label>Patient full name</label>
-              <input placeholder="e.g. Budi Santoso" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
           </>
         )}
 
         <div className="wizard-nav">
           <button className="btn btn-outline" disabled={step === 0} onClick={() => setStep(step - 1)}>Back</button>
-          {step < 4 ? (
+          {step < 6 ? (
             <button className="btn btn-primary" disabled={!canNext} onClick={() => setStep(step + 1)}>Continue</button>
           ) : (
-            <button className="btn btn-teal" disabled={!name.trim() || busy} onClick={confirm}>
+            <button className="btn btn-teal" disabled={!name.trim() || !phone.trim() || busy} onClick={confirm}>
               {busy ? <><span className="spinner" /> Processing...</> : "Confirm Booking"}
             </button>
           )}
@@ -201,7 +250,7 @@ export default function AppointmentPage() {
         <div className="container">
           <div className="breadcrumb"><a href="/">Home</a> / Book Appointment</div>
           <h1>Book Appointment</h1>
-          <p>Five quick steps — specialty, doctor, date, time, confirm.</p>
+          <p>Doctor → Location → Date → Time → Patient → Confirm.</p>
         </div>
       </div>
       <section className="section" style={{ paddingTop: 30 }}>

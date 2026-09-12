@@ -5,13 +5,15 @@ import { LOCATIONS } from "../../lib/data";
 
 export default function LocationsPage() {
   const [q, setQ] = useState("");
+  const [active, setActive] = useState(LOCATIONS[0].id);
   const results = useMemo(() => {
     const n = q.trim().toLowerCase();
     if (!n) return LOCATIONS;
     return LOCATIONS.filter((l) => `${l.name} ${l.city} ${l.address}`.toLowerCase().includes(n));
   }, [q]);
 
-  const mapQ = encodeURIComponent(results[0] ? `${results[0].name} ${results[0].city}` : "Jakarta hospital");
+  const current = results.find((l) => l.id === active) ?? results[0];
+  const mapQ = encodeURIComponent(current ? `${current.name} ${current.address}` : "Jakarta hospital");
 
   return (
     <>
@@ -29,7 +31,7 @@ export default function LocationsPage() {
         <div className="container loc-grid">
           <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {results.map((l) => (
-              <div className="card loc-card" key={l.id}>
+              <div className="card loc-card" key={l.id} style={l.id === active ? { borderColor: "var(--blue)", boxShadow: "0 18px 40px rgba(22,119,255,.18)" } : undefined}>
                 <Photo src={l.photo} alt={l.name} className="loc-photo" ratio="16/9" />
                 <h3>{l.name}</h3>
                 {l.emergency && <p style={{ fontWeight: 700, color: "var(--red)" }}>Emergency Care Available</p>}
@@ -37,9 +39,12 @@ export default function LocationsPage() {
                 <p>{l.hours}<br />{l.phone}</p>
                 <div className="loc-tags">{l.tags.map((t) => <span key={t}>{t}</span>)}</div>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <button className={`btn btn-sm ${l.id === active ? "btn-primary" : "btn-outline"}`} onClick={() => setActive(l.id)}>
+                    View Location
+                  </button>
                   <a className="btn btn-outline btn-sm"
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.name + " " + l.address)}`}
-                    target="_blank" rel="noreferrer">Get Directions →</a>
+                    target="_blank" rel="noreferrer">Get Directions</a>
                   <a className="btn btn-primary btn-sm" href="/appointment">Book Here</a>
                 </div>
               </div>
