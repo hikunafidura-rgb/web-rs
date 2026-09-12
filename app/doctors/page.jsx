@@ -2,52 +2,15 @@
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Photo from "../../components/Photo";
-import { Icon } from "../../components/Icons";
+import DoctorCard from "../../components/DoctorCard";
 import {
-  DOCTORS, SPECIALTIES, specialtyName, nextAvailable, BRANCH_NAMES,
-  dateKey, slotState, TIMES, availabilityRank,
+  DOCTORS, SPECIALTIES, specialtyName, availabilityRank,
+  dateKey, slotState, TIMES,
 } from "../../lib/data";
 
 function availableToday(id) {
   const key = dateKey(new Date());
   return TIMES.some((t) => slotState(id, key, t) === "available");
-}
-
-function DirCard({ doctor }) {
-  const next = nextAvailable(doctor.id);
-  const today = availableToday(doctor.id);
-  return (
-    <div className="card dir-card">
-      <Photo src={doctor.photo} alt={doctor.name} ratio="16/10" className="dir-photo" />
-      <h3>
-        <Link href={`/doctors/${doctor.id}`}>{doctor.name}</Link>
-        <Icon name="i-check" size={20} className="verify" />
-      </h3>
-      <div className="dir-title">{doctor.title} · {specialtyName(doctor.specialty)}</div>
-      <div className="doc-meta" style={{ marginBottom: 6 }}>
-        <span>{BRANCH_NAMES[doctor.branches[0]]}</span>
-      </div>
-      <div className="doc-meta">
-        <span><b className="rating">★ {doctor.rating}</b> · {doctor.reviews} reviews</span>
-        <span><b>{doctor.experience} years</b> experience</span>
-      </div>
-      <div style={{ marginBottom: 4, display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <span className="avail" style={today ? undefined : { background: "#F1F5F9", color: "#94A3B8" }}>
-          {today ? "● Available Today" : "○ Fully booked today"}
-        </span>
-        {doctor.tele && <span className="tele-badge">Video consult</span>}
-      </div>
-      <div className="next-box">
-        <small>Next available</small>
-        {next ? <strong>{next.label} · {next.time}</strong> : <span>No slots this week</span>}
-      </div>
-      <div className="dir-actions">
-        <Link href={`/doctors/${doctor.id}`} className="btn btn-outline btn-sm">View Profile</Link>
-        <Link href={`/appointment?doctor=${doctor.id}`} className="btn btn-primary btn-sm">Book Appointment</Link>
-      </div>
-    </div>
-  );
 }
 
 function Finder() {
@@ -140,7 +103,7 @@ function Finder() {
             </div>
           ) : (
             <div className="grid-3">
-              {results.map((d) => <DirCard key={d.id} doctor={d} />)}
+              {results.map((d) => <DoctorCard key={d.id} doctor={d} />)}
             </div>
           )}
         </div>
