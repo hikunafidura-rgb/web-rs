@@ -90,6 +90,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
 /* ── spec doctor card (competition standard) ── */
 .doc-card{background:#fff;border:1px solid #E8EEF4;border-radius:20px;overflow:hidden;box-shadow:0 12px 30px rgba(11,31,51,.07);transition:transform .28s ease,box-shadow .28s ease;display:flex;flex-direction:column}
 .doc-card:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(11,31,51,.14)}
+.doc-card>a{display:block}
+.doc-photo{min-height:240px}
+.doc-photo img{position:absolute;inset:0;object-position:center 22%}
 .doc-photo{display:block}
 .doc-body{padding:24px 24px 26px;display:flex;flex-direction:column;flex:1}
 .doc-name{font-size:20px;font-weight:800;letter-spacing:-.2px;color:#0B1F33;display:flex;align-items:center;gap:8px}
